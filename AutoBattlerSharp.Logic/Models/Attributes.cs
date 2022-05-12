@@ -8,6 +8,8 @@ namespace AutoBattlerSharp.Logic.Models
 {
     internal class Attributes
     {
+        public bool IsAlive { get; set; }
+        public bool IsAttackable { get; set; }
         public byte Melee { get; set; }
         public byte Range { get; set; }
         public byte Sturdiness { get; set; }
