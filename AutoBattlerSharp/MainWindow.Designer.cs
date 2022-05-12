@@ -36,6 +36,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Name = "MainWindow";
+            this.Padding = new System.Windows.Forms.Padding(5);
             this.Text = "AutoBattlerSharp";
             this.ResumeLayout(false);
 
