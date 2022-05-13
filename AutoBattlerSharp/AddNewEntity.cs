@@ -12,9 +12,16 @@ namespace AutoBattlerSharp.GUI
 {
     public partial class AddNewEntity : Form
     {
+        public int? Return { get; set; }
+
         public AddNewEntity()
         {
             InitializeComponent();
+        }
+
+        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
+        {
+            Return = (int)numericUpDown1.Value;
         }
     }
 }
