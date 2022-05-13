@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AutoBattlerSharp.Logic.Models
 {
-    internal interface IMoveable
+    public interface IMoveable
     {
         public byte Position { get; set; }
         public void Move(byte position);

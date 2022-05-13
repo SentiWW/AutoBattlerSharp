@@ -6,11 +6,16 @@ using System.Threading.Tasks;
 
 namespace AutoBattlerSharp.Logic.Models
 {
-    internal class Human : Creature, IAttackable
+    public class Human : Creature, IAttackable
     {
         public Human(string name, string description, Attributes attributes) : base(name, description, attributes)
         {
 
+        }
+
+        public Human(Human human) : base(human.Name, human.Description, human.Attributes)
+        {
+            
         }
 
         public void Attack(IAttackable target)
@@ -26,6 +31,15 @@ namespace AutoBattlerSharp.Logic.Models
         public byte GetTotalDefence()
         {
             throw new NotImplementedException();
+        }
+
+        public override string ToString()
+        {
+            return $"Human:\n" +
+                   $"\tId: {Id}\n" +
+                   $"\tName: {Name}\n" +
+                   $"\tDescription: {Description}\n" +
+                   Attributes.ToString();
         }
     }
 }
