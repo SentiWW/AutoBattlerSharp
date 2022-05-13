@@ -23,7 +23,14 @@ namespace AutoBattlerSharp
                 return;
 
             AddNewEntity closedForm = (AddNewEntity)sender;
-            MessageBox.Show(closedForm.Return.ToString());
+
+            if (closedForm.Human is not null)
+            {
+                RichTextBox textBox = new RichTextBox();
+                textBox.Text = closedForm.Human.ToString();
+                textBox.Dock = DockStyle.Top;
+                HorizontalSplitContainer.Panel1.Controls.Add(textBox);
+            }
         }
     }
 }

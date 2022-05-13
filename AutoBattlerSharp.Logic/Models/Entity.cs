@@ -10,5 +10,13 @@
         {
             (Id, Name, Description) = (Guid.NewGuid(), name, description);
         }
+
+        public override string ToString()
+        {
+            return $"Entity:\n" +
+                   $"\tId: {Id}\n" +
+                   $"\tName: {Name}\n" +
+                   $"\tDescription: {Description}";
+        }
     }
 }
