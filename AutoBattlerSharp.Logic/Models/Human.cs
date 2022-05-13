@@ -32,5 +32,14 @@ namespace AutoBattlerSharp.Logic.Models
         {
             throw new NotImplementedException();
         }
+
+        public override string ToString()
+        {
+            return $"Human:\n" +
+                   $"\tId: {Id}\n" +
+                   $"\tName: {Name}\n" +
+                   $"\tDescription: {Description}\n" +
+                   Attributes.ToString();
+        }
     }
 }
