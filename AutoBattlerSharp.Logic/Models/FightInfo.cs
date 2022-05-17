@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace AutoBattlerSharp.Logic.Models
 {
-    public interface IMoveable
+    public class FightInfo
     {
-        public byte Position { get; set; }
-        public void Move(byte position);
+        public string Information { get; set; } = "";
     }
 }

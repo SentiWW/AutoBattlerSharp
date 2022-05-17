@@ -10,17 +10,18 @@ namespace AutoBattlerSharp.Logic.Models
     {
         public bool IsAlive { get; set; }
         public bool IsAttackable { get; set; }
-        public byte Melee { get; set; }
-        public byte Range { get; set; }
-        public byte Sturdiness { get; set; }
-        public byte Resistance { get; set; }
-        public byte Agility { get; set; }
-        public byte Intelligence { get; set; }
-        public byte Attacks { get; set; }
-        public byte Health { get; set; }
-        public byte Speed { get; set; }
-        public byte Strength { get; set; }
-        public byte Magic { get; set; }
+        public short Melee { get; set; }
+        public short Range { get; set; }
+        public short Sturdiness { get; set; }
+        public short Resistance { get; set; }
+        public short Agility { get; set; }
+        public short Intelligence { get; set; }
+        public short Attacks { get; set; }
+        public short Health { get; set; }
+        public short MaxHealth { get; set; }
+        public short Speed { get; set; }
+        public short Strength { get; set; }
+        public short Magic { get; set; }
 
         public Attributes()
         {
@@ -39,6 +40,7 @@ namespace AutoBattlerSharp.Logic.Models
             Intelligence = attributes.Intelligence;
             Attacks = attributes.Attacks;
             Health = attributes.Health;
+            MaxHealth = attributes.MaxHealth;
             Speed = attributes.Speed;
             Strength = attributes.Strength;
             Magic = attributes.Magic;
@@ -57,6 +59,7 @@ namespace AutoBattlerSharp.Logic.Models
                    $"\tIntelligence: {Intelligence}\n" +
                    $"\tAttacks: {Attacks}\n" +
                    $"\tHealth: {Health}\n" +
+                   $"\tMaxHealth: {MaxHealth}\n" +
                    $"\tSpeed: {Speed}\n" +
                    $"\tStrength: {Strength}\n" +
                    $"\tMagic: {Magic}";

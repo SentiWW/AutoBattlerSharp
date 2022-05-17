@@ -32,6 +32,7 @@ namespace AutoBattlerSharp.GUI
             attributes.Agility = (byte)AttributesAgilityNumericUpDown.Value;
             attributes.Intelligence = (byte)AttributesIntelligenceNumericUpDown.Value;
             attributes.Attacks = (byte)AttributesAttacksNumericUpDown.Value;
+            attributes.MaxHealth = (byte)AttributesHealthNumericUpDown.Value;
             attributes.Health = (byte)AttributesHealthNumericUpDown.Value;
             attributes.Speed = (byte)AttributesSpeedNumericUpDown.Value;
             attributes.Strength = (byte)AttributesStrengthNumericUpDown.Value;
