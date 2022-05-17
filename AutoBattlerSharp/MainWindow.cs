@@ -273,9 +273,11 @@ namespace AutoBattlerSharp
             if (GameTimer.Enabled)
             {
                 GameTimer.Enabled = false;
+                FightButton.Enabled = true;
                 return;
             }
 
+            FightButton.Enabled = false;
             GameTimer.Enabled = true;
         }
 
