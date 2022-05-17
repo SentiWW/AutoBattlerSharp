@@ -8,25 +8,20 @@ namespace AutoBattlerSharp.Logic.Models
 {
     public class MagicWand : Item, IWeapon
     {
-        public byte MinIntelligence { get; set; }
-        public byte AttackPoints { get; set; }
+        public short AttackPoints { get; set; }
         public float Accuracy { get; set; }
 
-        public MagicWand(string name, string description, byte value, byte weight, byte minIntelligence, byte attackPoints) : base(name, description, value, weight)
+        public MagicWand(string name, string description, short value, short weight, short attackPoints) : base(name, description, value, weight)
         {
-            MinIntelligence = minIntelligence;
             AttackPoints = attackPoints;
             Accuracy = 1;
         }
 
-        public byte GetAttackDamage(byte attack, byte magic, byte sturdiness, byte strength, byte intelligence)
+        public short GetAttackDamage(short attack, short magic, short sturdiness, short strength, short intelligence)
         {
             int attackDamage = 0;
-            if(intelligence >= MinIntelligence)
-            {
-                attackDamage += AttackPoints * magic;
-            }
-            return (byte) attackDamage;
+            attackDamage += AttackPoints * magic;
+            return (short) attackDamage;
         }
     }
 }
