@@ -9,20 +9,22 @@ namespace AutoBattlerSharp.Logic.Models
 {
     public class Human : Creature, IAttackable
     {
+        IWeapon? Weapon;
+
         [JsonConstructor]
         public Human()
         {
 
         }
 
-        public Human(string name, string description, Attributes attributes) : base(name, description, attributes)
+        public Human(string name, string description, Attributes attributes, IWeapon? weapon = null) : base(name, description, attributes)
         {
-
+            Weapon = weapon;
         }
 
         public Human(Human human) : base(human.Name, human.Description, human.Attributes)
         {
-            
+            Weapon = human.Weapon;
         }
 
         public new FightInfo Attack(IAttackable target, FightInfo info)
@@ -107,7 +109,8 @@ namespace AutoBattlerSharp.Logic.Models
                    $"\tId: {Id}\n" +
                    $"\tName: {Name}\n" +
                    $"\tDescription: {Description}\n" +
-                   Attributes.ToString();
+                   Attributes.ToString() +
+                   (Weapon is not null ? Weapon.ToString() : "");
         }
     }
 }

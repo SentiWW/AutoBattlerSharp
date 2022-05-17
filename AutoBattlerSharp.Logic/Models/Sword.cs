@@ -19,7 +19,7 @@ namespace AutoBattlerSharp.Logic.Models
         }
 
  
-        public short GetAttackDamage(short attack, short magic, short sturdiness, short strength, short intelligence)
+        public short GetAttackDamage(Attributes attributes)
         {
             int attackDamage = 0;
 
@@ -27,7 +27,7 @@ namespace AutoBattlerSharp.Logic.Models
 
             if (rnd.NextDouble() < Accuracy)
             {
-                attackDamage += AttackPoints * (sturdiness + strength) + attack;
+                attackDamage += AttackPoints * (attributes.Sturdiness + attributes.Strength) + attributes.Attacks;
             }
             return (short) attackDamage;
         }
