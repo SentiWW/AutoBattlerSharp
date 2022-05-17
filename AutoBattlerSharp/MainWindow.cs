@@ -69,10 +69,18 @@ namespace AutoBattlerSharp
             panel.Height = 128;
 
             Label name = new Label();
-            name.Text = $"{fighter.Name} " + (ally ? "(Ally)" : "(Enemy)");
+            name.Height = 16;
+            name.Text = $"{fighter.Name}";
             name.Dock = DockStyle.Top;
             name.ForeColor = ally ? Color.Green : Color.Red;
             name.TextAlign = ContentAlignment.MiddleCenter;
+
+            Label type = new Label();
+            type.Height = 16;
+            type.Text = (ally ? "(Ally)" : "(Enemy)");
+            type.Dock = DockStyle.Top;
+            type.ForeColor = ally ? Color.Green : Color.Red;
+            type.TextAlign = ContentAlignment.MiddleCenter;
 
             PictureBox health = new PictureBox();
             health.Width = 168;
@@ -127,6 +135,7 @@ namespace AutoBattlerSharp
 
             panel.Controls.Add(health);
             panel.Controls.Add(state);
+            panel.Controls.Add(type);
             panel.Controls.Add(name);
             panel.Controls.Add(inspect);
             panel.Controls.Add(remove);
