@@ -8,18 +8,18 @@ namespace AutoBattlerSharp.Logic.Models
 {
     public class Sword : Item, IWeapon
     {
-        public byte AttackPoints { get; set; }
+        public short AttackPoints { get; set; }
         public float Accuracy { get; set; }
 
 
-        public Sword(string name, string description, byte value, byte weight, byte attackPoints, float accuracy) : base(name, description, value, weight)
+        public Sword(string name, string description, short value, short weight, short attackPoints, float accuracy) : base(name, description, value, weight)
         {
             AttackPoints = attackPoints;
             Accuracy = accuracy;
         }
 
  
-        public byte GetAttackDamage(byte attack, byte magic, byte sturdiness, byte strength, byte intelligence)
+        public short GetAttackDamage(short attack, short magic, short sturdiness, short strength, short intelligence)
         {
             int attackDamage = 0;
 
@@ -29,7 +29,7 @@ namespace AutoBattlerSharp.Logic.Models
             {
                 attackDamage += AttackPoints * (sturdiness + strength) + attack;
             }
-            return (byte) attackDamage;
+            return (short) attackDamage;
         }
     }
 }
