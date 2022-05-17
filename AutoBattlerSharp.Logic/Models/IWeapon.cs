@@ -8,10 +8,10 @@ namespace AutoBattlerSharp.Logic.Models
 {
     public interface IWeapon
     {
-        public byte AttackPoints { get; set; }
+        public short AttackPoints { get; set; }
         public float Accuracy { get; set; }
 
-        public byte GetAttackDamage(byte attack, byte magic, byte sturdiness, byte strength, byte intelligence);
+        public short GetAttackDamage(short attack, short magic, short sturdiness, short strength, short intelligence);
 
     }
 }
