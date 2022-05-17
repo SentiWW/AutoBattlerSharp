@@ -283,5 +283,33 @@ namespace AutoBattlerSharp
         {
             FightButton_Click(sender, e);
         }
+
+        private void SaveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DialogResult result = FightersSaveFileDialog.ShowDialog();
+
+            if (result != DialogResult.OK)
+                return;
+
+            using (Stream stream = FightersSaveFileDialog.OpenFile())
+            {
+                battlefield.SaveToFile(stream);
+            }
+        }
+
+        private void LoadToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DialogResult result = FightersOpenFileDialog.ShowDialog();
+
+            if (result != DialogResult.OK)
+                return;
+
+            using(Stream stream = FightersOpenFileDialog.OpenFile())
+            {
+                battlefield.LoadFromFile(stream);
+            }
+
+            RenderDynamicGUI();
+        }
     }
 }

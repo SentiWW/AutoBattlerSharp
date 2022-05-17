@@ -2,12 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace AutoBattlerSharp.Logic.Models
 {
     public class Human : Creature, IAttackable
     {
+        [JsonConstructor]
+        public Human()
+        {
+
+        }
+
         public Human(string name, string description, Attributes attributes) : base(name, description, attributes)
         {
 
