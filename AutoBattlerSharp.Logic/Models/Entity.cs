@@ -1,4 +1,6 @@
-﻿namespace AutoBattlerSharp.Logic.Models
+﻿using System.Text.Json.Serialization;
+
+namespace AutoBattlerSharp.Logic.Models
 {
     public abstract class Entity
     {
@@ -7,9 +9,15 @@
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
 
+        [JsonConstructor]
+        public Entity()
+        {
+
+        }
+
         public Entity(string name, string description)
         {
-            (Id, Name, Description) = (Guid.NewGuid(), name, description);
+            (Id, Name, Description) = (Guid.NewGuid(), name.Trim(), description);
         }
 
         public override string ToString()

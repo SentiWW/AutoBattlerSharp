@@ -5,6 +5,8 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace AutoBattlerSharp.Logic
 {
@@ -12,14 +14,18 @@ namespace AutoBattlerSharp.Logic
     {
         private Random _random = new Random();
         private string[] _names;
+        [JsonPropertyName("allies")]
+        [JsonInclude]
         public List<Human> Allies;
+        [JsonPropertyName("enemies")]
+        [JsonInclude]
         public List<Human> Enemies;
 
         public Battlefield()
         {
             using (StreamReader reader = new StreamReader(@$"{AppDomain.CurrentDomain.BaseDirectory}\names.txt"))
             {
-                _names = reader.ReadToEnd().Split('\n');
+                _names = reader.ReadToEnd().Trim().Replace('\r', ' ').Split("\n");
             }
 
             Attributes attributes = new Attributes()
@@ -144,6 +150,40 @@ namespace AutoBattlerSharp.Logic
                 return null;
 
             return aliveFighters[_random.Next(aliveFighters.Count)];
+        }
+
+        public void SaveToFile(Stream stream)
+        {
+            string serialized = JsonSerializer.Serialize(this, typeof(Battlefield), new JsonSerializerOptions
+            {
+                WriteIndented = false
+            });
+
+            using(StreamWriter writer = new StreamWriter(stream))
+            {
+                writer.Write(serialized);
+            }
+        }
+
+        public void LoadFromFile(Stream stream)
+        {
+            string rawJson;
+
+            using (StreamReader reader = new StreamReader(stream))
+            {
+                rawJson = reader.ReadToEnd();
+            }
+
+            Battlefield? temp = JsonSerializer.Deserialize<Battlefield>(rawJson, new JsonSerializerOptions
+            {
+                WriteIndented = false
+            });
+
+            if (temp is null)
+                return;
+
+            Allies = new List<Human>(temp.Allies);
+            Enemies = new List<Human>(temp.Enemies);
         }
     }
 }

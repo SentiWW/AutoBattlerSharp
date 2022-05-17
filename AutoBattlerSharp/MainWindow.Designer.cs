@@ -31,6 +31,9 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             this.TopToolStrip = new System.Windows.Forms.ToolStrip();
+            this.FileToolStripDropDownButton = new System.Windows.Forms.ToolStripDropDownButton();
+            this.SaveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.LoadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.DebugToolStripDropDownButton = new System.Windows.Forms.ToolStripDropDownButton();
             this.AddNewEntityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainPanelPadded = new System.Windows.Forms.Panel();
@@ -43,6 +46,8 @@
             this.FightButton = new System.Windows.Forms.Button();
             this.FightLogRichTextBox = new System.Windows.Forms.RichTextBox();
             this.GameTimer = new System.Windows.Forms.Timer(this.components);
+            this.FightersSaveFileDialog = new System.Windows.Forms.SaveFileDialog();
+            this.FightersOpenFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.TopToolStrip.SuspendLayout();
             this.MainPanelPadded.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.HorizontalSplitContainer)).BeginInit();
@@ -62,12 +67,39 @@
             // TopToolStrip
             // 
             this.TopToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.FileToolStripDropDownButton,
             this.DebugToolStripDropDownButton});
             this.TopToolStrip.Location = new System.Drawing.Point(0, 0);
             this.TopToolStrip.Name = "TopToolStrip";
             this.TopToolStrip.Size = new System.Drawing.Size(800, 25);
             this.TopToolStrip.TabIndex = 0;
             this.TopToolStrip.Text = "TopToolStrip";
+            // 
+            // FileToolStripDropDownButton
+            // 
+            this.FileToolStripDropDownButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.FileToolStripDropDownButton.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.SaveToolStripMenuItem,
+            this.LoadToolStripMenuItem});
+            this.FileToolStripDropDownButton.Image = ((System.Drawing.Image)(resources.GetObject("FileToolStripDropDownButton.Image")));
+            this.FileToolStripDropDownButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.FileToolStripDropDownButton.Name = "FileToolStripDropDownButton";
+            this.FileToolStripDropDownButton.Size = new System.Drawing.Size(38, 22);
+            this.FileToolStripDropDownButton.Text = "File";
+            // 
+            // SaveToolStripMenuItem
+            // 
+            this.SaveToolStripMenuItem.Name = "SaveToolStripMenuItem";
+            this.SaveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.SaveToolStripMenuItem.Text = "Save";
+            this.SaveToolStripMenuItem.Click += new System.EventHandler(this.SaveToolStripMenuItem_Click);
+            // 
+            // LoadToolStripMenuItem
+            // 
+            this.LoadToolStripMenuItem.Name = "LoadToolStripMenuItem";
+            this.LoadToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.LoadToolStripMenuItem.Text = "Load";
+            this.LoadToolStripMenuItem.Click += new System.EventHandler(this.LoadToolStripMenuItem_Click);
             // 
             // DebugToolStripDropDownButton
             // 
@@ -214,6 +246,15 @@
             this.GameTimer.Interval = 1000;
             this.GameTimer.Tick += new System.EventHandler(this.GameTimer_Tick);
             // 
+            // FightersSaveFileDialog
+            // 
+            this.FightersSaveFileDialog.DefaultExt = "json";
+            this.FightersSaveFileDialog.FileName = "fighters";
+            // 
+            // FightersOpenFileDialog
+            // 
+            this.FightersOpenFileDialog.FileName = "openFileDialog1";
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -259,5 +300,10 @@
         private FlowLayoutPanel EnemiesFlowLayoutPanel;
         private Button AutoplayButton;
         private System.Windows.Forms.Timer GameTimer;
+        private ToolStripDropDownButton FileToolStripDropDownButton;
+        private ToolStripMenuItem SaveToolStripMenuItem;
+        private ToolStripMenuItem LoadToolStripMenuItem;
+        private SaveFileDialog FightersSaveFileDialog;
+        private OpenFileDialog FightersOpenFileDialog;
     }
 }
