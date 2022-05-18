@@ -96,7 +96,8 @@ namespace AutoBattlerSharp
             using (var brush = new SolidBrush(Color.Green))
             using (var brushText = new SolidBrush(Color.White))
             {
-                gfx.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                gfx.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighSpeed;
+                gfx.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighSpeed;
                 gfx.Clear(Color.Red);
 
                 double healthProportion = (double)fighter.Attributes.Health / (double)fighter.Attributes.MaxHealth;
@@ -142,7 +143,6 @@ namespace AutoBattlerSharp
 
                 RenderDynamicGUI();
             };
-
 
             panel.Controls.Add(health);
             panel.Controls.Add(state);
