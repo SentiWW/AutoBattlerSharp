@@ -10,6 +10,10 @@ namespace AutoBattlerSharp.Logic.Models.Creatures
 {
     public class Human : Creature, IAttackable
     {
+        [JsonPropertyName("armour")]
+        [JsonInclude]
+        public List<Armour>? ArmourPieces; 
+
         [JsonPropertyName("weapon")]
         [JsonInclude]
         public Weapon? Weapon = null;
@@ -79,6 +83,12 @@ namespace AutoBattlerSharp.Logic.Models.Creatures
                                        Math.Sqrt(Attributes.Resistance) +
                                        Math.Sqrt(Attributes.Sturdiness));
 
+            if (ArmourPieces is null || ArmourPieces.Count == 0)
+                return totalDefence;
+
+            foreach (Armour piece in ArmourPieces)
+                totalDefence += piece.GetDefence(Attributes, info);
+
             return totalDefence;
         }
 
@@ -89,7 +99,10 @@ namespace AutoBattlerSharp.Logic.Models.Creatures
                    $"\tName: {Name}\n" +
                    $"\tDescription: {Description}\n" +
                    Attributes.ToString() +
-                   (Weapon is not null ? Weapon.ToString() : "");
+                   (Weapon is not null ? Weapon.ToString() : "") +
+                   (ArmourPieces is not null && ArmourPieces.Count > 0 ?
+                   string.Join(" ", ArmourPieces.Select(piece => piece.ToString())) :
+                   "");
         }
     }
 }
