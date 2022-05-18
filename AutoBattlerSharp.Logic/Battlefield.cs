@@ -16,6 +16,10 @@ namespace AutoBattlerSharp.Logic
     {
         private Random _random = new Random();
         private string[] _names;
+
+        private Queue<IAttackable> _allies;
+        private Queue<IAttackable> _enemies;
+
         [JsonPropertyName("allies")]
         [JsonInclude]
         public List<Human> Allies;
@@ -103,6 +107,11 @@ namespace AutoBattlerSharp.Logic
 
                 Enemies.Add(new Human($"{_names[_random.Next(_names.Count())]}", $"Human {i}", new Attributes(attributes)));
             }
+
+            _allies = new Queue<IAttackable>();
+            _enemies = new Queue<IAttackable>();
+            Allies.ForEach(ally => _allies.Enqueue(ally));
+            Enemies.ForEach(enemy => _enemies.Enqueue(enemy));
         }
 
 
@@ -110,7 +119,7 @@ namespace AutoBattlerSharp.Logic
         {
             FightInfo info = new FightInfo();
 
-            IAttackable? ally = GetRandomAlive(Allies);
+            IAttackable? ally = GetNextAlive(_allies);
             IAttackable? enemy = GetRandomAlive(Enemies);
 
             if (ally is null)
@@ -128,7 +137,7 @@ namespace AutoBattlerSharp.Logic
             info.Information = ally.Attack(enemy, info).Information;
 
             ally = GetRandomAlive(Allies);
-            enemy = GetRandomAlive(Enemies);
+            enemy = GetNextAlive(_enemies);
 
             if (ally is null)
             {
@@ -147,9 +156,27 @@ namespace AutoBattlerSharp.Logic
             return info;
         }
 
-        private IAttackable? GetNextAlive(IEnumerable<IAttackable> fighters)
+        private IAttackable? GetNextAlive(Queue<IAttackable> fighters)
         {
-            return fighters.FirstOrDefault(fighter => fighter.Attributes.IsAlive);
+            if (fighters.Count == 0)
+                return null;
+
+            IAttackable? fighter = null;
+
+            for (int i = 0; i < fighters.Count; i++)
+            {
+                fighter = fighters.Dequeue();
+
+                if (fighter.Attributes.IsAlive)
+                    break;
+            }
+
+            if (fighter is null || !fighter.Attributes.IsAlive)
+                return null;
+
+            fighters.Enqueue(fighter);
+
+            return fighter;
         }
 
         private IAttackable? GetRandomAlive(IEnumerable<IAttackable> fighters)
