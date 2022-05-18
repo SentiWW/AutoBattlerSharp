@@ -11,7 +11,7 @@ namespace AutoBattlerSharp.Logic.Models
         public short AttackPoints { get; set; }
         public float Accuracy { get; set; }
 
-        public short GetAttackDamage(Attributes attributes);
+        public short GetAttackDamage(Attributes attributes, FightInfo info);
 
     }
 }

@@ -1,41 +1,25 @@
 using AutoBattlerSharp.GUI;
 using AutoBattlerSharp.Logic;
 using AutoBattlerSharp.Logic.Models;
+using AutoBattlerSharp.Logic.Models.Creatures;
 
 namespace AutoBattlerSharp
 {
     public partial class MainWindow : Form
     {
         private Random random = new Random();
+        private Battlefield field;
+
         public MainWindow()
         {
+            field = new Battlefield();
             InitializeComponent();
             RenderDynamicGUI();
         }
 
-        private void AddNewEntityToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            AddNewEntity addNewEntityWindow = new AddNewEntity();
-            addNewEntityWindow.FormClosed += HandleFormClosed;
-
-            addNewEntityWindow.Show();
-        }
-
-        private void HandleFormClosed(object? sender, FormClosedEventArgs e)
-        {
-            if (sender is null)
-                return;
-
-            AddNewEntity closedForm = (AddNewEntity)sender;
-
-            if (closedForm.Human is not null)
-                MessageBox.Show(closedForm.Human.ToString());
-        }
-
-        Battlefield battlefield = new Battlefield();
         private void FightButton_Click(object sender, EventArgs e)
         {
-            FightLogRichTextBox.Text += battlefield.Fight().Information;
+            FightLogRichTextBox.Text += field.Fight().Information;
             FightLogRichTextBox.SelectionStart = FightLogRichTextBox.Text.Length;
             FightLogRichTextBox.ScrollToCaret();
             RenderDynamicGUI();
@@ -46,19 +30,19 @@ namespace AutoBattlerSharp
             AlliesFlowLayoutPanel.Controls.Clear();
             EnemiesFlowLayoutPanel.Controls.Clear();
 
-            foreach (Creature ally in battlefield.Allies)
-                AlliesFlowLayoutPanel.Controls.Add(GetHumanControl(ally, battlefield.Allies, true));
+            foreach (Creature ally in field.Allies)
+                AlliesFlowLayoutPanel.Controls.Add(GetHumanControl(ally, field.Allies, true));
 
-            foreach (Creature enemy in battlefield.Enemies)
-                EnemiesFlowLayoutPanel.Controls.Add(GetHumanControl(enemy, battlefield.Enemies, false));
+            foreach (Creature enemy in field.Enemies)
+                EnemiesFlowLayoutPanel.Controls.Add(GetHumanControl(enemy, field.Enemies, false));
 
             RenderAddEntities();
         }
 
         private void RenderAddEntities()
         {
-            AlliesFlowLayoutPanel.Controls.Add(GetAddControl(battlefield.Allies));
-            EnemiesFlowLayoutPanel.Controls.Add(GetAddControl(battlefield.Enemies));
+            AlliesFlowLayoutPanel.Controls.Add(GetAddControl(field.Allies));
+            EnemiesFlowLayoutPanel.Controls.Add(GetAddControl(field.Enemies));
         }
 
         private Control GetHumanControl(Creature fighter, List<Human> fighters, bool ally)
@@ -90,6 +74,7 @@ namespace AutoBattlerSharp
             using (var bmp = new Bitmap(health.Width, health.Height))
             using (var gfx = Graphics.FromImage(bmp))
             using (var brush = new SolidBrush(Color.Green))
+            using (var brushText = new SolidBrush(Color.White))
             {
                 gfx.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
                 gfx.Clear(Color.Red);
@@ -100,6 +85,9 @@ namespace AutoBattlerSharp
                 Rectangle healthBar = new Rectangle(-1, -1, width, 33);
 
                 gfx.FillRectangle(brush, healthBar);
+
+                gfx.DrawString($"{fighter.Attributes.Health}/{fighter.Attributes.MaxHealth}",
+                               new Font("Segoe UI", 8), brushText, new Point(9, 9));
 
                 health.Image?.Dispose();
                 health.Image = (Bitmap)bmp.Clone();
@@ -143,6 +131,28 @@ namespace AutoBattlerSharp
             return panel;
         }
 
+        private Control GetNumericUpDownWithLabel(string text)
+        {
+            Panel panel = new Panel();
+            panel.Width = 64;
+            panel.Height = 40;
+            panel.BorderStyle = BorderStyle.FixedSingle;
+
+            Label label = new Label();
+            label.Width = 64;
+            label.Height = 16;
+            label.Dock = DockStyle.Top;
+            label.Text = text;
+
+            NumericUpDown number = new NumericUpDown();
+            number.Width = 64;
+            number.Dock = DockStyle.Top;
+
+            panel.Controls.Add(number);
+            panel.Controls.Add(label);
+            return panel;
+        }
+
         private Control GetAddControl(List<Human> fighters)
         {
             FlowLayoutPanel panelAdd = new FlowLayoutPanel();
@@ -167,58 +177,40 @@ namespace AutoBattlerSharp
             isAttackable.Text = "Is attackable?";
             isAttackable.Checked = true;
 
-            NumericUpDown melee = new NumericUpDown();
-            melee.Width = 64;
 
-            NumericUpDown range = new NumericUpDown();
-            range.Width = 64;
-
-            NumericUpDown sturdiness = new NumericUpDown();
-            sturdiness.Width = 64;
-
-            NumericUpDown resistance = new NumericUpDown();
-            resistance.Width = 64;
-
-            NumericUpDown agility = new NumericUpDown();
-            agility.Width = 64;
-
-            NumericUpDown intelligence = new NumericUpDown();
-            intelligence.Width = 64;
-
-            NumericUpDown attacks = new NumericUpDown();
-            attacks.Width = 64;
-
-            NumericUpDown health = new NumericUpDown();
-            health.Width = 64;
-
-            NumericUpDown speed = new NumericUpDown();
-            speed.Width = 64;
-
-            NumericUpDown strength = new NumericUpDown();
-            strength.Width = 64;
-
-            NumericUpDown magic = new NumericUpDown();
-            magic.Width = 64;
+            var melee = GetNumericUpDownWithLabel("Melee");
+            var range = GetNumericUpDownWithLabel("Range");
+            var sturdiness = GetNumericUpDownWithLabel("Sturdiness");
+            var resistance = GetNumericUpDownWithLabel("Resistance");
+            var agility = GetNumericUpDownWithLabel("Agility");
+            var intelligence = GetNumericUpDownWithLabel("Intelligence");
+            var attacks = GetNumericUpDownWithLabel("Attacks");
+            var health = GetNumericUpDownWithLabel("Health");
+            var speed = GetNumericUpDownWithLabel("Speed");
+            var strength = GetNumericUpDownWithLabel("Strength");
+            var magic = GetNumericUpDownWithLabel("Magic");
 
             Button add = new Button();
+            add.Width = 64;
+            add.Height = 40;
             add.Text = "Add";
             add.Click += (sender, e) =>
             {
                 Attributes attributes = new Attributes();
                 attributes.IsAlive = isAlive.Checked;
                 attributes.IsAttackable = isAttackable.Checked;
-                attributes.Melee = (short)melee.Value;
-                attributes.Range = (short)range.Value;
-                attributes.Sturdiness = (short)sturdiness.Value;
-                attributes.Resistance = (short)resistance.Value;
-                attributes.Agility = (short)agility.Value;
-                attributes.Intelligence = (short)intelligence.Value;
-                attributes.Attacks = (short)attacks.Value;
-                attributes.Health = (short)health.Value;
-                attributes.MaxHealth = (short)health.Value;
-                attributes.Speed = (short)speed.Value;
-                attributes.Strength = (short)strength.Value;
-                attributes.Magic = (short)magic.Value;
+                attributes.Melee = (short)((NumericUpDown)melee.Controls[0]).Value;
+                attributes.Range = (short)((NumericUpDown)range.Controls[0]).Value;
+                attributes.Sturdiness = (short)((NumericUpDown)sturdiness.Controls[0]).Value;
+                attributes.Resistance = (short)((NumericUpDown)resistance.Controls[0]).Value;
+                attributes.Agility = (short)((NumericUpDown)agility.Controls[0]).Value;
+                attributes.Intelligence = (short)((NumericUpDown)intelligence.Controls[0]).Value;
+                attributes.Attacks = (short)((NumericUpDown)attacks.Controls[0]).Value;
+                attributes.Health = (short)((NumericUpDown)health.Controls[0]).Value;
+                attributes.MaxHealth = (short)((NumericUpDown)health.Controls[0]).Value;
+                attributes.Speed = (short)((NumericUpDown)speed.Controls[0]).Value;
+                attributes.Strength = (short)((NumericUpDown)strength.Controls[0]).Value;
+                attributes.Magic = (short)((NumericUpDown)magic.Controls[0]).Value;
 
                 fighters.Add(new Human(nameAdd.Text,
                                        description.Text,
@@ -228,20 +220,22 @@ namespace AutoBattlerSharp
             };
 
             Button randomize = new Button();
-            randomize.Text = "Randomize";
+            randomize.Width = 64;
+            randomize.Height = 40;
+            randomize.Text = "Random";
             randomize.Click += (sender, e) =>
             {
-                melee.Value = (short)random.Next(100);
-                range.Value = (short)random.Next(100);
-                sturdiness.Value = (short)random.Next(100);
-                resistance.Value = (short)random.Next(100);
-                agility.Value = (short)random.Next(100);
-                intelligence.Value = (short)random.Next(100);
-                attacks.Value = (short)random.Next(100);
-                health.Value = (short)random.Next(100);
-                speed.Value = (short)random.Next(100);
-                strength.Value = (short)random.Next(100);
-                magic.Value = (short)random.Next(100);
+                ((NumericUpDown)melee.Controls[0]).Value = (short)random.Next(100);
+                ((NumericUpDown)range.Controls[0]).Value = (short)random.Next(100);
+                ((NumericUpDown)sturdiness.Controls[0]).Value = (short)random.Next(100);
+                ((NumericUpDown)resistance.Controls[0]).Value = (short)random.Next(100);
+                ((NumericUpDown)agility.Controls[0]).Value = (short)random.Next(100);
+                ((NumericUpDown)intelligence.Controls[0]).Value = (short)random.Next(100);
+                ((NumericUpDown)attacks.Controls[0]).Value = (short)random.Next(100);
+                ((NumericUpDown)health.Controls[0]).Value = (short)random.Next(100);
+                ((NumericUpDown)speed.Controls[0]).Value = (short)random.Next(100);
+                ((NumericUpDown)strength.Controls[0]).Value = (short)random.Next(100);
+                ((NumericUpDown)magic.Controls[0]).Value = (short)random.Next(100);
             };
 
             panelAdd.Controls.AddRange(new Control[]
@@ -295,7 +289,7 @@ namespace AutoBattlerSharp
 
             using (Stream stream = FightersSaveFileDialog.OpenFile())
             {
-                battlefield.SaveToFile(stream);
+                field.SaveToFile(stream);
             }
         }
 
@@ -308,7 +302,7 @@ namespace AutoBattlerSharp
 
             using(Stream stream = FightersOpenFileDialog.OpenFile())
             {
-                battlefield.LoadFromFile(stream);
+                field.LoadFromFile(stream);
             }
 
             RenderDynamicGUI();

@@ -34,8 +34,6 @@
             this.FileToolStripDropDownButton = new System.Windows.Forms.ToolStripDropDownButton();
             this.SaveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.LoadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.DebugToolStripDropDownButton = new System.Windows.Forms.ToolStripDropDownButton();
-            this.AddNewEntityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainPanelPadded = new System.Windows.Forms.Panel();
             this.HorizontalSplitContainer = new System.Windows.Forms.SplitContainer();
             this.FightersSplitContainer = new System.Windows.Forms.SplitContainer();
@@ -67,8 +65,7 @@
             // TopToolStrip
             // 
             this.TopToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.FileToolStripDropDownButton,
-            this.DebugToolStripDropDownButton});
+            this.FileToolStripDropDownButton});
             this.TopToolStrip.Location = new System.Drawing.Point(0, 0);
             this.TopToolStrip.Name = "TopToolStrip";
             this.TopToolStrip.Size = new System.Drawing.Size(800, 25);
@@ -100,24 +97,6 @@
             this.LoadToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.LoadToolStripMenuItem.Text = "Load";
             this.LoadToolStripMenuItem.Click += new System.EventHandler(this.LoadToolStripMenuItem_Click);
-            // 
-            // DebugToolStripDropDownButton
-            // 
-            this.DebugToolStripDropDownButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.DebugToolStripDropDownButton.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.AddNewEntityToolStripMenuItem});
-            this.DebugToolStripDropDownButton.Image = ((System.Drawing.Image)(resources.GetObject("DebugToolStripDropDownButton.Image")));
-            this.DebugToolStripDropDownButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.DebugToolStripDropDownButton.Name = "DebugToolStripDropDownButton";
-            this.DebugToolStripDropDownButton.Size = new System.Drawing.Size(55, 22);
-            this.DebugToolStripDropDownButton.Text = "Debug";
-            // 
-            // AddNewEntityToolStripMenuItem
-            // 
-            this.AddNewEntityToolStripMenuItem.Name = "AddNewEntityToolStripMenuItem";
-            this.AddNewEntityToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
-            this.AddNewEntityToolStripMenuItem.Text = "Add new entity";
-            this.AddNewEntityToolStripMenuItem.Click += new System.EventHandler(this.AddNewEntityToolStripMenuItem_Click);
             // 
             // MainPanelPadded
             // 
@@ -290,8 +269,6 @@
         private ToolStrip TopToolStrip;
         private Panel MainPanelPadded;
         private SplitContainer HorizontalSplitContainer;
-        private ToolStripDropDownButton DebugToolStripDropDownButton;
-        private ToolStripMenuItem AddNewEntityToolStripMenuItem;
         private Button FightButton;
         private RichTextBox FightLogRichTextBox;
         private SplitContainer BottomSplitContainerVertical;

@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using AutoBattlerSharp.Logic.Models.Creatures;
+using AutoBattlerSharp.Logic.Models.Items;
 
 namespace AutoBattlerSharp.Logic
 {
@@ -69,6 +71,9 @@ namespace AutoBattlerSharp.Logic
 
                 Allies.Add(new Human($"{_names[_random.Next(_names.Count())]}", $"Human {i}", new Attributes(attributes)));
             }
+
+            Allies[0].Weapon = new Sword("Sword of Doom", "Description", 100, 5, 2, 50);
+            Allies[1].Weapon = new MagicWand("Wand of Discord", "Description", 100, 5, 2);
 
             Enemies = new List<Human>();
             for (int i = 0; i < 4; i++)
