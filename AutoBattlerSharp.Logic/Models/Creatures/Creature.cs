@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace AutoBattlerSharp.Logic.Models
+namespace AutoBattlerSharp.Logic.Models.Creatures
 {
     public abstract class Creature : Entity, IAttackable
     {
@@ -14,7 +14,7 @@ namespace AutoBattlerSharp.Logic.Models
         [JsonConstructor]
         public Creature()
         {
-            
+
         }
 
         public Creature(string name, string description, Attributes attributes) : base(name, description)
@@ -38,17 +38,7 @@ namespace AutoBattlerSharp.Logic.Models
 
         public FightInfo Attack(IAttackable target, FightInfo info)
         {
-            if(!target.Attributes.IsAttackable)
-            {
-                info.Information += $"{Name} tried to attack {((Entity)target).Name} but they are unattackable!\n";
-                return info;
-            }
-
-            if (!target.Attributes.IsAlive)
-            {
-                info.Information += $"{Name} tried to attack {((Entity)target).Name} but they are dead!\n";
-                return info;
-            }
+            CheckValidTarget(target, info);
 
             short damage = (short)(GetTotalAttack(ref info) - GetTotalDefence(ref info));
 
@@ -61,18 +51,49 @@ namespace AutoBattlerSharp.Logic.Models
             target.Attributes.Health -= damage;
             info.Information += $"{Name} attacks {((Entity)target).Name} dealing {damage} damage!\n";
 
-            if (target.Attributes.Health <= 0)
+            CheckIfTargetDied(target, info);
+            return info;
+        }
+
+        protected FightInfo CheckValidTarget(IAttackable target, FightInfo info)
+        {
+            if (!target.Attributes.IsAttackable)
             {
-                target.Attributes.IsAttackable = false;
-                target.Attributes.IsAlive = false;
-                info.Information += $"{((Entity)target).Name} dies!\n";
+                info.Information += $"{Name} tried to attack {((Entity)target).Name} but they are unattackable!\n";
+                return info;
+            }
+
+            if (!target.Attributes.IsAlive)
+            {
+                info.Information += $"{Name} tried to attack {((Entity)target).Name} but they are dead!\n";
+                return info;
             }
 
             return info;
         }
 
+        protected FightInfo CheckIfTargetDied(IAttackable target, FightInfo info)
+        {
+            if (target.Attributes.Health > 0)
+                return info;
+
+            target.Attributes.IsAttackable = false;
+            target.Attributes.IsAlive = false;
+            info.Information += $"{((Entity)target).Name} dies!\n";
+            return info;
+        }
+
         public short GetTotalAttack(ref FightInfo info)
         {
+            short accuracy = (short)_random.Next(0, 100);
+
+            if (accuracy > 90)
+            {
+                info.Information += $"{Name} missed!\n";
+
+                return 0;
+            }
+
             short totalAttack = Attributes.Strength;
 
             return totalAttack;

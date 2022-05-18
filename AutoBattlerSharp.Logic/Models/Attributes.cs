@@ -62,7 +62,7 @@ namespace AutoBattlerSharp.Logic.Models
                    $"\tMaxHealth: {MaxHealth}\n" +
                    $"\tSpeed: {Speed}\n" +
                    $"\tStrength: {Strength}\n" +
-                   $"\tMagic: {Magic}";
+                   $"\tMagic: {Magic}\n";
         }
     }
 }
