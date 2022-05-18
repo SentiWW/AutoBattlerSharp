@@ -73,6 +73,11 @@ namespace AutoBattlerSharp.Logic
             }
 
             Allies[0].Weapon = new Sword("Sword of Doom", "Description", 100, 5, 2, 50);
+            Allies[0].ArmourPieces = new List<Armour>
+            {
+                new Armour("Helmet", "Helmet", 100, 50, 10),
+                new Armour("Plate", "Plate", 100, 50, 20)
+            };
             Allies[1].Weapon = new MagicWand("Wand of Discord", "Description", 100, 5, 2);
 
             Enemies = new List<Human>();
@@ -155,6 +160,14 @@ namespace AutoBattlerSharp.Logic
                 return null;
 
             return aliveFighters[_random.Next(aliveFighters.Count)];
+        }
+
+        public string GetRandomName()
+        {
+            if (_names.Count() == 0)
+                return "Name";
+
+            return _names[_random.Next(_names.Count())];
         }
 
         public void SaveToFile(Stream stream)

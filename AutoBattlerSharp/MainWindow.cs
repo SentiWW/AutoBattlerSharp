@@ -248,6 +248,8 @@ namespace AutoBattlerSharp
             randomize.Text = "Random";
             randomize.Click += (sender, e) =>
             {
+                nameAdd.Text = field.GetRandomName();
+
                 ((NumericUpDown)melee.Controls[0]).Value = (short)random.Next(100);
                 ((NumericUpDown)range.Controls[0]).Value = (short)random.Next(100);
                 ((NumericUpDown)sturdiness.Controls[0]).Value = (short)random.Next(100);
