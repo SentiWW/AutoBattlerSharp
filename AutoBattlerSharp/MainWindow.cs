@@ -25,11 +25,31 @@ namespace AutoBattlerSharp
             RenderDynamicGUI();
         }
 
+        private void ReleaseResources(Control control, bool deleteControl = false)
+        {
+            foreach (Control sub in control.Controls)
+            {
+                sub.Dispose();
+            }
+            control.Controls.Clear();
+
+            if (deleteControl)
+                control.Dispose();
+        }
+
         private void RenderDynamicGUI()
         {
-            AlliesFlowLayoutPanel.Controls.Clear();
-            EnemiesFlowLayoutPanel.Controls.Clear();
+            //foreach (Control control in AlliesFlowLayoutPanel.Controls)
+            //    control.Dispose();
+            //AlliesFlowLayoutPanel.Controls.Clear();
 
+            //foreach (Control control in EnemiesFlowLayoutPanel.Controls)
+            //    control.Dispose();
+            //EnemiesFlowLayoutPanel.Controls.Clear();
+
+            ReleaseResources(AlliesFlowLayoutPanel);
+            ReleaseResources(EnemiesFlowLayoutPanel);
+           
             foreach (Creature ally in field.Allies)
                 AlliesFlowLayoutPanel.Controls.Add(GetHumanControl(ally, field.Allies, true));
 
@@ -117,6 +137,9 @@ namespace AutoBattlerSharp
             remove.Click += (sender, e) =>
             {
                 fighters.Remove((Human)fighter);
+
+                ReleaseResources(panel, true);
+
                 RenderDynamicGUI();
             };
 
