@@ -26,6 +26,7 @@ namespace AutoBattlerSharp.Logic
         [JsonPropertyName("enemies")]
         [JsonInclude]
         public List<Human> Enemies;
+        public bool EveryoneDied = false;
 
         public Battlefield()
         {
@@ -114,6 +115,12 @@ namespace AutoBattlerSharp.Logic
             Enemies.ForEach(enemy => _enemies.Enqueue(enemy));
         }
 
+        public void CheckIfEitherPartyDied()
+        {
+            if (Allies.All(ally => !ally.Attributes.IsAlive) ||
+                Enemies.All(enemy => !enemy.Attributes.IsAlive))
+                EveryoneDied = true;
+        }
 
         public FightInfo Fight()
         {
@@ -127,7 +134,7 @@ namespace AutoBattlerSharp.Logic
                 info.Information += $"There were no allies left to attack.\n";
                 return info;
             }
-
+            
             if (enemy is null)
             {
                 info.Information += $"There were no enemies left to attack.\n";
@@ -152,6 +159,14 @@ namespace AutoBattlerSharp.Logic
             }
 
             info.Information = enemy.Attack(ally, info).Information;
+
+            return info;
+        }
+
+        private FightInfo CheckIfFighterIsNull(IAttackable? attackable, string infoString, FightInfo info)
+        {
+            if (attackable is null)
+                info.Information += $"{infoString}\n";
 
             return info;
         }

@@ -7,19 +7,35 @@ namespace AutoBattlerSharp
 {
     public partial class MainWindow : Form
     {
-        private Random random = new Random();
-        private Battlefield field;
+        private Random _random = new Random();
+        private Battlefield _field;
+        private bool _fightStarted = false;
 
         public MainWindow()
         {
-            field = new Battlefield();
+            _field = new Battlefield();
             InitializeComponent();
             RenderDynamicGUI();
         }
 
         private void FightButton_Click(object sender, EventArgs e)
         {
-            FightLogRichTextBox.Text += field.Fight().Information;
+            _field.CheckIfEitherPartyDied();
+
+            if (_field.EveryoneDied)
+            {
+                _field.EveryoneDied = false;
+                _fightStarted = false;
+                FightButton.Enabled = true;
+                GameTimer.Stop();
+                RenderDynamicGUI();
+                return;
+            }
+
+            if (!_fightStarted)
+                _fightStarted = true;
+
+            FightLogRichTextBox.Text += _field.Fight().Information;
             FightLogRichTextBox.SelectionStart = FightLogRichTextBox.Text.Length;
             FightLogRichTextBox.ScrollToCaret();
             RenderDynamicGUI();
@@ -39,30 +55,23 @@ namespace AutoBattlerSharp
 
         private void RenderDynamicGUI()
         {
-            //foreach (Control control in AlliesFlowLayoutPanel.Controls)
-            //    control.Dispose();
-            //AlliesFlowLayoutPanel.Controls.Clear();
-
-            //foreach (Control control in EnemiesFlowLayoutPanel.Controls)
-            //    control.Dispose();
-            //EnemiesFlowLayoutPanel.Controls.Clear();
-
             ReleaseResources(AlliesFlowLayoutPanel);
             ReleaseResources(EnemiesFlowLayoutPanel);
            
-            foreach (Creature ally in field.Allies)
-                AlliesFlowLayoutPanel.Controls.Add(GetHumanControl(ally, field.Allies, true));
+            foreach (Creature ally in _field.Allies)
+                AlliesFlowLayoutPanel.Controls.Add(GetHumanControl(ally, _field.Allies, true));
 
-            foreach (Creature enemy in field.Enemies)
-                EnemiesFlowLayoutPanel.Controls.Add(GetHumanControl(enemy, field.Enemies, false));
+            foreach (Creature enemy in _field.Enemies)
+                EnemiesFlowLayoutPanel.Controls.Add(GetHumanControl(enemy, _field.Enemies, false));
 
-            RenderAddEntities();
+            if(!_fightStarted)
+                RenderAddEntities();
         }
 
         private void RenderAddEntities()
         {
-            AlliesFlowLayoutPanel.Controls.Add(GetAddControl(field.Allies));
-            EnemiesFlowLayoutPanel.Controls.Add(GetAddControl(field.Enemies));
+            AlliesFlowLayoutPanel.Controls.Add(GetAddControl(_field.Allies));
+            EnemiesFlowLayoutPanel.Controls.Add(GetAddControl(_field.Enemies));
         }
 
         private Control GetHumanControl(Creature fighter, List<Human> fighters, bool ally)
@@ -248,19 +257,19 @@ namespace AutoBattlerSharp
             randomize.Text = "Random";
             randomize.Click += (sender, e) =>
             {
-                nameAdd.Text = field.GetRandomName();
+                nameAdd.Text = _field.GetRandomName();
 
-                ((NumericUpDown)melee.Controls[0]).Value = (short)random.Next(100);
-                ((NumericUpDown)range.Controls[0]).Value = (short)random.Next(100);
-                ((NumericUpDown)sturdiness.Controls[0]).Value = (short)random.Next(100);
-                ((NumericUpDown)resistance.Controls[0]).Value = (short)random.Next(100);
-                ((NumericUpDown)agility.Controls[0]).Value = (short)random.Next(100);
-                ((NumericUpDown)intelligence.Controls[0]).Value = (short)random.Next(100);
-                ((NumericUpDown)attacks.Controls[0]).Value = (short)random.Next(100);
-                ((NumericUpDown)health.Controls[0]).Value = (short)random.Next(100);
-                ((NumericUpDown)speed.Controls[0]).Value = (short)random.Next(100);
-                ((NumericUpDown)strength.Controls[0]).Value = (short)random.Next(100);
-                ((NumericUpDown)magic.Controls[0]).Value = (short)random.Next(100);
+                ((NumericUpDown)melee.Controls[0]).Value = (short)_random.Next(100);
+                ((NumericUpDown)range.Controls[0]).Value = (short)_random.Next(100);
+                ((NumericUpDown)sturdiness.Controls[0]).Value = (short)_random.Next(100);
+                ((NumericUpDown)resistance.Controls[0]).Value = (short)_random.Next(100);
+                ((NumericUpDown)agility.Controls[0]).Value = (short)_random.Next(100);
+                ((NumericUpDown)intelligence.Controls[0]).Value = (short)_random.Next(100);
+                ((NumericUpDown)attacks.Controls[0]).Value = (short)_random.Next(100);
+                ((NumericUpDown)health.Controls[0]).Value = (short)_random.Next(100);
+                ((NumericUpDown)speed.Controls[0]).Value = (short)_random.Next(100);
+                ((NumericUpDown)strength.Controls[0]).Value = (short)_random.Next(100);
+                ((NumericUpDown)magic.Controls[0]).Value = (short)_random.Next(100);
             };
 
             panelAdd.Controls.AddRange(new Control[]
@@ -314,7 +323,7 @@ namespace AutoBattlerSharp
 
             using (Stream stream = FightersSaveFileDialog.OpenFile())
             {
-                field.SaveToFile(stream);
+                _field.SaveToFile(stream);
             }
         }
 
@@ -327,7 +336,7 @@ namespace AutoBattlerSharp
 
             using(Stream stream = FightersOpenFileDialog.OpenFile())
             {
-                field.LoadFromFile(stream);
+                _field.LoadFromFile(stream);
             }
 
             RenderDynamicGUI();
