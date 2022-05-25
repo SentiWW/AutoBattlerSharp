@@ -17,8 +17,9 @@ namespace AutoBattlerSharp.Logic
         private Random _random = new Random();
         private string[] _names;
 
-        private Queue<IAttackable> _allies;
-        private Queue<IAttackable> _enemies;
+        private int _alliesI = 0;
+        private int _enemiesI = 0;
+        private bool _allyTurn;
 
         [JsonPropertyName("allies")]
         [JsonInclude]
@@ -26,6 +27,7 @@ namespace AutoBattlerSharp.Logic
         [JsonPropertyName("enemies")]
         [JsonInclude]
         public List<Human> Enemies;
+        public bool EveryoneDied = false;
 
         public Battlefield()
         {
@@ -34,47 +36,8 @@ namespace AutoBattlerSharp.Logic
                 _names = reader.ReadToEnd().Trim().Replace('\r', ' ').Split("\n");
             }
 
-            Attributes attributes = new Attributes()
-            {
-                IsAlive = true,
-                IsAttackable = true,
-                Melee = (byte)_random.Next(0, 100),
-                Range = (byte)_random.Next(0, 100),
-                Sturdiness = (byte)_random.Next(0, 100),
-                Resistance = (byte)_random.Next(0, 100),
-                Agility = (byte)_random.Next(0, 100),
-                Intelligence = (byte)_random.Next(0, 100),
-                Attacks = (byte)_random.Next(1, 2),
-                Health = (byte)_random.Next(5, 30),
-                Speed = (byte)_random.Next(5, 30),
-                Strength = (byte)_random.Next(5, 30),
-                Magic = (byte)_random.Next(5, 30)
-            };
-            attributes.MaxHealth = attributes.Health;
-
             Allies = new List<Human>();
-            for (int i = 0; i < 4; i++)
-            {
-                attributes = new Attributes()
-                {
-                    IsAlive = true,
-                    IsAttackable = true,
-                    Melee = (short)_random.Next(0, 100),
-                    Range = (short)_random.Next(0, 100),
-                    Sturdiness = (short)_random.Next(0, 100),
-                    Resistance = (short)_random.Next(0, 100),
-                    Agility = (short)_random.Next(0, 100),
-                    Intelligence = (short)_random.Next(0, 100),
-                    Attacks = (short)_random.Next(1, 2),
-                    Health = (short)_random.Next(5, 30),
-                    Speed = (short)_random.Next(5, 30),
-                    Strength = (short)_random.Next(5, 30),
-                    Magic = (short)_random.Next(5, 30)
-                };
-                attributes.MaxHealth = attributes.Health;
-
-                Allies.Add(new Human($"{_names[_random.Next(_names.Count())]}", $"Human {i}", new Attributes(attributes)));
-            }
+            PopulateCreatures(Allies, 1);
 
             Allies[0].Weapon = new Sword("Sword of Doom", "Description", 100, 5, 2, 50);
             Allies[0].ArmourPieces = new List<Armour>
@@ -82,22 +45,32 @@ namespace AutoBattlerSharp.Logic
                 new Armour("Helmet", "Helmet", 100, 50, 10),
                 new Armour("Plate", "Plate", 100, 50, 20)
             };
-            Allies[1].Weapon = new MagicWand("Wand of Discord", "Description", 100, 5, 2);
 
             Enemies = new List<Human>();
-            for (int i = 0; i < 4; i++)
+            PopulateCreatures(Enemies, 20);
+
+            _allyTurn = true;
+            if (_random.Next(0, 2) == 1)
+                _allyTurn = false;
+        }
+
+        private void PopulateCreatures(ICollection<Human> creatures, byte howMany = 4)
+        {
+            Attributes attributes;
+
+            for (int i = 0; i < howMany; i++)
             {
                 attributes = new Attributes()
                 {
                     IsAlive = true,
                     IsAttackable = true,
-                    Melee = (short)_random.Next(0, 100),
-                    Range = (short)_random.Next(0, 100),
-                    Sturdiness = (short)_random.Next(0, 100),
-                    Resistance = (short)_random.Next(0, 100),
-                    Agility = (short)_random.Next(0, 100),
-                    Intelligence = (short)_random.Next(0, 100),
-                    Attacks = (short)_random.Next(1, 2),
+                    Melee = (short)_random.Next(10, 50),
+                    Range = (short)_random.Next(10, 50),
+                    Sturdiness = (short)_random.Next(10, 50),
+                    Resistance = (short)_random.Next(10, 50),
+                    Agility = (short)_random.Next(10, 50),
+                    Intelligence = (short)_random.Next(10, 50),
+                    Attacks = (short)_random.Next(1, 3),
                     Health = (short)_random.Next(5, 30),
                     Speed = (short)_random.Next(5, 30),
                     Strength = (short)_random.Next(5, 30),
@@ -105,76 +78,74 @@ namespace AutoBattlerSharp.Logic
                 };
                 attributes.MaxHealth = attributes.Health;
 
-                Enemies.Add(new Human($"{_names[_random.Next(_names.Count())]}", $"Human {i}", new Attributes(attributes)));
+                creatures.Add(new Human($"{_names[_random.Next(_names.Count())]}", $"Human {i}", new Attributes(attributes)));
             }
-
-            _allies = new Queue<IAttackable>();
-            _enemies = new Queue<IAttackable>();
-            Allies.ForEach(ally => _allies.Enqueue(ally));
-            Enemies.ForEach(enemy => _enemies.Enqueue(enemy));
         }
 
+        public void CheckIfEitherPartyDied()
+        {
+            if (Allies.All(ally => !ally.Attributes.IsAlive) ||
+                Enemies.All(enemy => !enemy.Attributes.IsAlive))
+                EveryoneDied = true;
+        }
 
         public FightInfo Fight()
         {
             FightInfo info = new FightInfo();
 
-            IAttackable? ally = GetNextAlive(_allies);
-            IAttackable? enemy = GetRandomAlive(Enemies);
+            IAttackable? attacker = null;
+            IAttackable? target = null;
 
-            if (ally is null)
+            if (_allyTurn)
+                attacker = GetNextAlive(Allies);
+            else
+                attacker = GetNextAlive(Enemies);
+
+            for (int i = 0; i < attacker.Attributes.Attacks; i++)
             {
-                info.Information += $"There were no allies left to attack.\n";
-                return info;
+                if (_allyTurn)
+                    target = GetRandomAlive(Enemies);
+                else
+                    target = GetRandomAlive(Allies);
+
+                if (attacker is null || target is null)
+                    return info;
+
+                info.Information = attacker.Attack(target, info).Information;
             }
 
-            if (enemy is null)
-            {
-                info.Information += $"There were no enemies left to attack.\n";
-                return info;
-            }
-
-            info.Information = ally.Attack(enemy, info).Information;
-
-            ally = GetRandomAlive(Allies);
-            enemy = GetNextAlive(_enemies);
-
-            if (ally is null)
-            {
-                info.Information += $"There were no allies left to attack.\n";
-                return info;
-            }
-
-            if (enemy is null)
-            {
-                info.Information += $"There were no enemies left to attack.\n";
-                return info;
-            }
-
-            info.Information = enemy.Attack(ally, info).Information;
-
+            _allyTurn = _allyTurn ? false : true;
             return info;
         }
 
-        private IAttackable? GetNextAlive(Queue<IAttackable> fighters)
+        private IAttackable? GetNextAlive(IEnumerable<IAttackable> fighters)
         {
-            if (fighters.Count == 0)
-                return null;
-
             IAttackable? fighter = null;
 
-            for (int i = 0; i < fighters.Count; i++)
+            if (_allyTurn)
             {
-                fighter = fighters.Dequeue();
+                fighter = fighters.Skip(_alliesI++).Where(fighter => fighter.Attributes.IsAlive).FirstOrDefault();
 
-                if (fighter.Attributes.IsAlive)
-                    break;
+                if (fighter is null)
+                {
+                    _alliesI = 0;
+                    fighter = fighters.Skip(_alliesI++).Where(fighter => fighter.Attributes.IsAlive).FirstOrDefault();
+                }
+
+                _alliesI %= fighters.Count();
+
+                return fighter;
             }
 
-            if (fighter is null || !fighter.Attributes.IsAlive)
-                return null;
+            fighter = fighters.Skip(_enemiesI++).Where(fighter => fighter.Attributes.IsAlive).FirstOrDefault();
 
-            fighters.Enqueue(fighter);
+            if (fighter is null)
+            {
+                _enemiesI = 0;
+                fighter = fighters.Skip(_enemiesI++).Where(fighter => fighter.Attributes.IsAlive).FirstOrDefault();
+            }
+
+            _enemiesI %= fighters.Count();
 
             return fighter;
         }

@@ -20,6 +20,12 @@ namespace AutoBattlerSharp.Logic.Models.Creatures
         public Creature(string name, string description, Attributes attributes) : base(name, description)
         {
             Attributes = attributes;
+
+            if (Attributes.Health <= 0)
+            {
+                Attributes.IsAlive = false;
+                Attributes.IsAttackable = false;
+            }
         }
 
         public Creature(Creature creature) : base(creature.Name, creature.Description)
@@ -102,8 +108,8 @@ namespace AutoBattlerSharp.Logic.Models.Creatures
         public short GetTotalDefence(ref FightInfo info)
         {
             short totalDefence = (short)(Math.Sqrt(Attributes.Strength) +
-                                       Math.Sqrt(Attributes.Resistance) +
-                                       Math.Sqrt(Attributes.Sturdiness));
+                                         Math.Sqrt(Attributes.Resistance) +
+                                         Math.Sqrt(Attributes.Sturdiness));
 
             return totalDefence;
         }

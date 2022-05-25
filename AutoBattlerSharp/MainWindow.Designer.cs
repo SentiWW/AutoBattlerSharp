@@ -40,6 +40,8 @@
             this.AlliesFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.EnemiesFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.BottomSplitContainerVertical = new System.Windows.Forms.SplitContainer();
+            this.IntervalLabel = new System.Windows.Forms.Label();
+            this.MainTimerIntervalNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.AutoplayButton = new System.Windows.Forms.Button();
             this.FightButton = new System.Windows.Forms.Button();
             this.FightLogRichTextBox = new System.Windows.Forms.RichTextBox();
@@ -60,6 +62,7 @@
             this.BottomSplitContainerVertical.Panel1.SuspendLayout();
             this.BottomSplitContainerVertical.Panel2.SuspendLayout();
             this.BottomSplitContainerVertical.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.MainTimerIntervalNumericUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // TopToolStrip
@@ -87,14 +90,14 @@
             // SaveToolStripMenuItem
             // 
             this.SaveToolStripMenuItem.Name = "SaveToolStripMenuItem";
-            this.SaveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.SaveToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
             this.SaveToolStripMenuItem.Text = "Save";
             this.SaveToolStripMenuItem.Click += new System.EventHandler(this.SaveToolStripMenuItem_Click);
             // 
             // LoadToolStripMenuItem
             // 
             this.LoadToolStripMenuItem.Name = "LoadToolStripMenuItem";
-            this.LoadToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.LoadToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
             this.LoadToolStripMenuItem.Text = "Load";
             this.LoadToolStripMenuItem.Click += new System.EventHandler(this.LoadToolStripMenuItem_Click);
             // 
@@ -176,6 +179,8 @@
             // 
             // BottomSplitContainerVertical.Panel1
             // 
+            this.BottomSplitContainerVertical.Panel1.Controls.Add(this.IntervalLabel);
+            this.BottomSplitContainerVertical.Panel1.Controls.Add(this.MainTimerIntervalNumericUpDown);
             this.BottomSplitContainerVertical.Panel1.Controls.Add(this.AutoplayButton);
             this.BottomSplitContainerVertical.Panel1.Controls.Add(this.FightButton);
             // 
@@ -185,6 +190,40 @@
             this.BottomSplitContainerVertical.Size = new System.Drawing.Size(790, 204);
             this.BottomSplitContainerVertical.SplitterDistance = 103;
             this.BottomSplitContainerVertical.TabIndex = 0;
+            // 
+            // IntervalLabel
+            // 
+            this.IntervalLabel.AutoSize = true;
+            this.IntervalLabel.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.IntervalLabel.Location = new System.Drawing.Point(0, 118);
+            this.IntervalLabel.Name = "IntervalLabel";
+            this.IntervalLabel.Size = new System.Drawing.Size(79, 15);
+            this.IntervalLabel.TabIndex = 4;
+            this.IntervalLabel.Text = "Timer Interval";
+            // 
+            // MainTimerIntervalNumericUpDown
+            // 
+            this.MainTimerIntervalNumericUpDown.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.MainTimerIntervalNumericUpDown.Location = new System.Drawing.Point(0, 133);
+            this.MainTimerIntervalNumericUpDown.Maximum = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            0});
+            this.MainTimerIntervalNumericUpDown.Minimum = new decimal(new int[] {
+            500,
+            0,
+            0,
+            0});
+            this.MainTimerIntervalNumericUpDown.Name = "MainTimerIntervalNumericUpDown";
+            this.MainTimerIntervalNumericUpDown.Size = new System.Drawing.Size(101, 23);
+            this.MainTimerIntervalNumericUpDown.TabIndex = 3;
+            this.MainTimerIntervalNumericUpDown.Value = new decimal(new int[] {
+            500,
+            0,
+            0,
+            0});
+            this.MainTimerIntervalNumericUpDown.ValueChanged += new System.EventHandler(this.MainTimerIntervalNumericUpDown_ValueChanged);
             // 
             // AutoplayButton
             // 
@@ -222,7 +261,7 @@
             // 
             // GameTimer
             // 
-            this.GameTimer.Interval = 1000;
+            this.GameTimer.Interval = 500;
             this.GameTimer.Tick += new System.EventHandler(this.GameTimer_Tick);
             // 
             // FightersSaveFileDialog
@@ -232,7 +271,8 @@
             // 
             // FightersOpenFileDialog
             // 
-            this.FightersOpenFileDialog.FileName = "openFileDialog1";
+            this.FightersOpenFileDialog.FileName = "fighters.json";
+            this.FightersOpenFileDialog.Filter = "JSON files|*.json|All filed|*.*\"";
             // 
             // MainWindow
             // 
@@ -256,9 +296,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.FightersSplitContainer)).EndInit();
             this.FightersSplitContainer.ResumeLayout(false);
             this.BottomSplitContainerVertical.Panel1.ResumeLayout(false);
+            this.BottomSplitContainerVertical.Panel1.PerformLayout();
             this.BottomSplitContainerVertical.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.BottomSplitContainerVertical)).EndInit();
             this.BottomSplitContainerVertical.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.MainTimerIntervalNumericUpDown)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -282,5 +324,7 @@
         private ToolStripMenuItem LoadToolStripMenuItem;
         private SaveFileDialog FightersSaveFileDialog;
         private OpenFileDialog FightersOpenFileDialog;
+        private NumericUpDown MainTimerIntervalNumericUpDown;
+        private Label IntervalLabel;
     }
 }
