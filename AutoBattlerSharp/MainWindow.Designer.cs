@@ -40,10 +40,12 @@
             this.AlliesFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.EnemiesFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.BottomSplitContainerVertical = new System.Windows.Forms.SplitContainer();
-            this.IntervalLabel = new System.Windows.Forms.Label();
-            this.MainTimerIntervalNumericUpDown = new System.Windows.Forms.NumericUpDown();
-            this.AutoplayButton = new System.Windows.Forms.Button();
+            this.BottomLeftFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.GameControlsPanel = new System.Windows.Forms.Panel();
             this.FightButton = new System.Windows.Forms.Button();
+            this.AutoplayButton = new System.Windows.Forms.Button();
+            this.MainTimerIntervalNumericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.IntervalLabel = new System.Windows.Forms.Label();
             this.FightLogRichTextBox = new System.Windows.Forms.RichTextBox();
             this.GameTimer = new System.Windows.Forms.Timer(this.components);
             this.FightersSaveFileDialog = new System.Windows.Forms.SaveFileDialog();
@@ -62,6 +64,8 @@
             this.BottomSplitContainerVertical.Panel1.SuspendLayout();
             this.BottomSplitContainerVertical.Panel2.SuspendLayout();
             this.BottomSplitContainerVertical.SuspendLayout();
+            this.BottomLeftFlowLayoutPanel.SuspendLayout();
+            this.GameControlsPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MainTimerIntervalNumericUpDown)).BeginInit();
             this.SuspendLayout();
             // 
@@ -179,32 +183,63 @@
             // 
             // BottomSplitContainerVertical.Panel1
             // 
-            this.BottomSplitContainerVertical.Panel1.Controls.Add(this.IntervalLabel);
-            this.BottomSplitContainerVertical.Panel1.Controls.Add(this.MainTimerIntervalNumericUpDown);
-            this.BottomSplitContainerVertical.Panel1.Controls.Add(this.AutoplayButton);
-            this.BottomSplitContainerVertical.Panel1.Controls.Add(this.FightButton);
+            this.BottomSplitContainerVertical.Panel1.Controls.Add(this.BottomLeftFlowLayoutPanel);
             // 
             // BottomSplitContainerVertical.Panel2
             // 
             this.BottomSplitContainerVertical.Panel2.Controls.Add(this.FightLogRichTextBox);
             this.BottomSplitContainerVertical.Size = new System.Drawing.Size(790, 204);
-            this.BottomSplitContainerVertical.SplitterDistance = 103;
+            this.BottomSplitContainerVertical.SplitterDistance = 150;
             this.BottomSplitContainerVertical.TabIndex = 0;
             // 
-            // IntervalLabel
+            // BottomLeftFlowLayoutPanel
             // 
-            this.IntervalLabel.AutoSize = true;
-            this.IntervalLabel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.IntervalLabel.Location = new System.Drawing.Point(0, 118);
-            this.IntervalLabel.Name = "IntervalLabel";
-            this.IntervalLabel.Size = new System.Drawing.Size(79, 15);
-            this.IntervalLabel.TabIndex = 4;
-            this.IntervalLabel.Text = "Timer Interval";
+            this.BottomLeftFlowLayoutPanel.Controls.Add(this.GameControlsPanel);
+            this.BottomLeftFlowLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.BottomLeftFlowLayoutPanel.Location = new System.Drawing.Point(0, 0);
+            this.BottomLeftFlowLayoutPanel.Name = "BottomLeftFlowLayoutPanel";
+            this.BottomLeftFlowLayoutPanel.Size = new System.Drawing.Size(148, 202);
+            this.BottomLeftFlowLayoutPanel.TabIndex = 5;
+            // 
+            // GameControlsPanel
+            // 
+            this.GameControlsPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.GameControlsPanel.Controls.Add(this.FightButton);
+            this.GameControlsPanel.Controls.Add(this.AutoplayButton);
+            this.GameControlsPanel.Controls.Add(this.MainTimerIntervalNumericUpDown);
+            this.GameControlsPanel.Controls.Add(this.IntervalLabel);
+            this.GameControlsPanel.Location = new System.Drawing.Point(3, 3);
+            this.GameControlsPanel.Name = "GameControlsPanel";
+            this.GameControlsPanel.Padding = new System.Windows.Forms.Padding(3);
+            this.GameControlsPanel.Size = new System.Drawing.Size(142, 92);
+            this.GameControlsPanel.TabIndex = 5;
+            // 
+            // FightButton
+            // 
+            this.FightButton.Dock = System.Windows.Forms.DockStyle.Top;
+            this.FightButton.Location = new System.Drawing.Point(3, 64);
+            this.FightButton.Name = "FightButton";
+            this.FightButton.Size = new System.Drawing.Size(134, 23);
+            this.FightButton.TabIndex = 0;
+            this.FightButton.Text = "Fight";
+            this.FightButton.UseVisualStyleBackColor = true;
+            this.FightButton.Click += new System.EventHandler(this.FightButton_Click);
+            // 
+            // AutoplayButton
+            // 
+            this.AutoplayButton.Dock = System.Windows.Forms.DockStyle.Top;
+            this.AutoplayButton.Location = new System.Drawing.Point(3, 41);
+            this.AutoplayButton.Name = "AutoplayButton";
+            this.AutoplayButton.Size = new System.Drawing.Size(134, 23);
+            this.AutoplayButton.TabIndex = 2;
+            this.AutoplayButton.Text = "Autoplay";
+            this.AutoplayButton.UseVisualStyleBackColor = true;
+            this.AutoplayButton.Click += new System.EventHandler(this.AutoplayButton_Click);
             // 
             // MainTimerIntervalNumericUpDown
             // 
-            this.MainTimerIntervalNumericUpDown.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.MainTimerIntervalNumericUpDown.Location = new System.Drawing.Point(0, 133);
+            this.MainTimerIntervalNumericUpDown.Dock = System.Windows.Forms.DockStyle.Top;
+            this.MainTimerIntervalNumericUpDown.Location = new System.Drawing.Point(3, 18);
             this.MainTimerIntervalNumericUpDown.Maximum = new decimal(new int[] {
             100000,
             0,
@@ -216,7 +251,7 @@
             0,
             0});
             this.MainTimerIntervalNumericUpDown.Name = "MainTimerIntervalNumericUpDown";
-            this.MainTimerIntervalNumericUpDown.Size = new System.Drawing.Size(101, 23);
+            this.MainTimerIntervalNumericUpDown.Size = new System.Drawing.Size(134, 23);
             this.MainTimerIntervalNumericUpDown.TabIndex = 3;
             this.MainTimerIntervalNumericUpDown.Value = new decimal(new int[] {
             500,
@@ -225,27 +260,15 @@
             0});
             this.MainTimerIntervalNumericUpDown.ValueChanged += new System.EventHandler(this.MainTimerIntervalNumericUpDown_ValueChanged);
             // 
-            // AutoplayButton
+            // IntervalLabel
             // 
-            this.AutoplayButton.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.AutoplayButton.Location = new System.Drawing.Point(0, 156);
-            this.AutoplayButton.Name = "AutoplayButton";
-            this.AutoplayButton.Size = new System.Drawing.Size(101, 23);
-            this.AutoplayButton.TabIndex = 2;
-            this.AutoplayButton.Text = "Autoplay";
-            this.AutoplayButton.UseVisualStyleBackColor = true;
-            this.AutoplayButton.Click += new System.EventHandler(this.AutoplayButton_Click);
-            // 
-            // FightButton
-            // 
-            this.FightButton.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.FightButton.Location = new System.Drawing.Point(0, 179);
-            this.FightButton.Name = "FightButton";
-            this.FightButton.Size = new System.Drawing.Size(101, 23);
-            this.FightButton.TabIndex = 0;
-            this.FightButton.Text = "Fight";
-            this.FightButton.UseVisualStyleBackColor = true;
-            this.FightButton.Click += new System.EventHandler(this.FightButton_Click);
+            this.IntervalLabel.AutoSize = true;
+            this.IntervalLabel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.IntervalLabel.Location = new System.Drawing.Point(3, 3);
+            this.IntervalLabel.Name = "IntervalLabel";
+            this.IntervalLabel.Size = new System.Drawing.Size(79, 15);
+            this.IntervalLabel.TabIndex = 4;
+            this.IntervalLabel.Text = "Timer Interval";
             // 
             // FightLogRichTextBox
             // 
@@ -254,7 +277,7 @@
             this.FightLogRichTextBox.Location = new System.Drawing.Point(0, 0);
             this.FightLogRichTextBox.Name = "FightLogRichTextBox";
             this.FightLogRichTextBox.ReadOnly = true;
-            this.FightLogRichTextBox.Size = new System.Drawing.Size(681, 202);
+            this.FightLogRichTextBox.Size = new System.Drawing.Size(634, 202);
             this.FightLogRichTextBox.TabIndex = 1;
             this.FightLogRichTextBox.Text = "";
             this.FightLogRichTextBox.WordWrap = false;
@@ -296,10 +319,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.FightersSplitContainer)).EndInit();
             this.FightersSplitContainer.ResumeLayout(false);
             this.BottomSplitContainerVertical.Panel1.ResumeLayout(false);
-            this.BottomSplitContainerVertical.Panel1.PerformLayout();
             this.BottomSplitContainerVertical.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.BottomSplitContainerVertical)).EndInit();
             this.BottomSplitContainerVertical.ResumeLayout(false);
+            this.BottomLeftFlowLayoutPanel.ResumeLayout(false);
+            this.GameControlsPanel.ResumeLayout(false);
+            this.GameControlsPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MainTimerIntervalNumericUpDown)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -326,5 +351,7 @@
         private OpenFileDialog FightersOpenFileDialog;
         private NumericUpDown MainTimerIntervalNumericUpDown;
         private Label IntervalLabel;
+        private FlowLayoutPanel BottomLeftFlowLayoutPanel;
+        private Panel GameControlsPanel;
     }
 }

@@ -29,6 +29,7 @@ namespace AutoBattlerSharp
                 FightButton.Enabled = true;
                 GameTimer.Stop();
                 RenderDynamicGUI();
+                FightLogRichTextBox.Text += "There is no one left to attack! Consider adding some new fighters.\n";
                 return;
             }
 
