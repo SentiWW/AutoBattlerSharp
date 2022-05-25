@@ -45,10 +45,12 @@ namespace AutoBattlerSharp
         {
             foreach (Control sub in control.Controls)
             {
+                sub.Controls.Clear();
                 sub.Dispose();
-            }
-            control.Controls.Clear();
+            }  
 
+            control.Controls.Clear();
+            
             if (deleteControl)
                 control.Dispose();
         }
@@ -248,6 +250,9 @@ namespace AutoBattlerSharp
                                        description.Text,
                                        attributes));
 
+                if(attributes.IsAlive)
+                    _field.EveryoneDied = false;
+
                 RenderDynamicGUI();
             };
 
@@ -259,17 +264,17 @@ namespace AutoBattlerSharp
             {
                 nameAdd.Text = _field.GetRandomName();
 
-                ((NumericUpDown)melee.Controls[0]).Value = (short)_random.Next(100);
-                ((NumericUpDown)range.Controls[0]).Value = (short)_random.Next(100);
-                ((NumericUpDown)sturdiness.Controls[0]).Value = (short)_random.Next(100);
-                ((NumericUpDown)resistance.Controls[0]).Value = (short)_random.Next(100);
-                ((NumericUpDown)agility.Controls[0]).Value = (short)_random.Next(100);
-                ((NumericUpDown)intelligence.Controls[0]).Value = (short)_random.Next(100);
-                ((NumericUpDown)attacks.Controls[0]).Value = (short)_random.Next(100);
-                ((NumericUpDown)health.Controls[0]).Value = (short)_random.Next(100);
-                ((NumericUpDown)speed.Controls[0]).Value = (short)_random.Next(100);
-                ((NumericUpDown)strength.Controls[0]).Value = (short)_random.Next(100);
-                ((NumericUpDown)magic.Controls[0]).Value = (short)_random.Next(100);
+                ((NumericUpDown)melee.Controls[0]).Value = (short)_random.Next(10, 50);
+                ((NumericUpDown)range.Controls[0]).Value = (short)_random.Next(10, 50);
+                ((NumericUpDown)sturdiness.Controls[0]).Value = (short)_random.Next(10, 50);
+                ((NumericUpDown)resistance.Controls[0]).Value = (short)_random.Next(10, 50);
+                ((NumericUpDown)agility.Controls[0]).Value = (short)_random.Next(10, 50);
+                ((NumericUpDown)intelligence.Controls[0]).Value = (short)_random.Next(10, 50);
+                ((NumericUpDown)attacks.Controls[0]).Value = (short)_random.Next(1, 3);
+                ((NumericUpDown)health.Controls[0]).Value = (short)_random.Next(5, 30);
+                ((NumericUpDown)speed.Controls[0]).Value = (short)_random.Next(5, 30);
+                ((NumericUpDown)strength.Controls[0]).Value = (short)_random.Next(5, 30);
+                ((NumericUpDown)magic.Controls[0]).Value = (short)_random.Next(5, 30);
             };
 
             panelAdd.Controls.AddRange(new Control[]
@@ -340,6 +345,11 @@ namespace AutoBattlerSharp
             }
 
             RenderDynamicGUI();
+        }
+
+        private void MainTimerIntervalNumericUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            GameTimer.Interval = (int)MainTimerIntervalNumericUpDown.Value;
         }
     }
 }
