@@ -1,3 +1,4 @@
+using AutoBattlerSharp.GUI.CustomControls;
 using AutoBattlerSharp.Logic;
 using AutoBattlerSharp.Logic.Models;
 using AutoBattlerSharp.Logic.Models.Creatures;
@@ -10,11 +11,9 @@ namespace AutoBattlerSharp
         private Random _random = new Random();
         private Battlefield _field;
         private bool _fightStarted = false;
-        private HashSet<EventHandler> _events;
 
         public MainWindow()
         {
-            _events = new HashSet<EventHandler>();
             _field = new Battlefield();
             InitializeComponent();
             RenderDynamicGUI();
@@ -44,23 +43,20 @@ namespace AutoBattlerSharp
             RenderDynamicGUI();
         }
 
-        private void ReleaseResources(Control control, bool deleteControl = false)
+        private void ReleaseResources(Control control, bool disposeControl = false)
         {
             foreach (Control sub in control.Controls)
             {
-                foreach (EventHandler handler in _events)
-                    sub.Click -= handler;
+                if (sub.Controls.Count > 0)
+                    ReleaseResources(sub);
 
                 sub.Controls.Clear();
                 sub.Dispose();
-            }  
+            }
 
             control.Controls.Clear();
 
-            foreach (EventHandler handler in _events)
-                control.Click -= handler;
-            
-            if (deleteControl)
+            if (disposeControl)
                 control.Dispose();
         }
 
@@ -82,10 +78,6 @@ namespace AutoBattlerSharp
                 if (!_fightStarted)
                     AlliesFlowLayoutPanel.Controls.Add(GetAddControl(_field.Allies));
             }
-            catch(System.ComponentModel.Win32Exception exception)
-            {
-
-            }
             finally
             {
                 LockWindowUpdate(0);
@@ -102,10 +94,6 @@ namespace AutoBattlerSharp
 
                 if (!_fightStarted)
                     EnemiesFlowLayoutPanel.Controls.Add(GetAddControl(_field.Enemies));
-            }
-            catch (System.ComponentModel.Win32Exception exception)
-            {
-
             }
             finally
             {
@@ -179,37 +167,31 @@ namespace AutoBattlerSharp
                 TextAlign = ContentAlignment.MiddleCenter
             };
 
-            EventHandler inspectHandler = (sender, e) =>
+            SafeButton inspect = new SafeButton((sender, e) =>
             {
                 MessageBox.Show(fighter.ToString());
-            };
-
-            Button inspect = new Button()
+            })
             {
                 Location = new Point(panel.Right - 40, panel.Bottom - 40),
                 Width = 32,
                 Height = 32,
                 Text = "?"
             };
-            inspect.Click += inspectHandler;
 
-            EventHandler removeHandler = (sender, e) =>
+            SafeButton remove = new SafeButton((sender, e) =>
             {
                 fighters.Remove((Human)fighter);
 
                 ReleaseResources(panel, true);
 
                 RenderDynamicGUI();
-            };
-
-            Button remove = new Button()
+            })
             {
                 Location = new Point(panel.Right - 72, panel.Bottom - 40),
                 Width = 32,
                 Height = 32,
                 Text = "-"
             };
-            remove.Click += removeHandler;
 
             panel.Controls.AddRange(new Control[]
             {
@@ -220,9 +202,6 @@ namespace AutoBattlerSharp
                 inspect,
                 remove
             });
-
-            _events.Add(inspectHandler);
-            _events.Add(removeHandler);
 
             return panel;
         }
@@ -301,7 +280,7 @@ namespace AutoBattlerSharp
             var strength = GetNumericUpDownWithLabel("Strength");
             var magic = GetNumericUpDownWithLabel("Magic");
 
-            EventHandler addHandler = (sender, e) =>
+            SafeButton add = new SafeButton((sender, e) =>
             {
                 Attributes attributes = new Attributes();
                 attributes.IsAlive = isAlive.Checked;
@@ -323,21 +302,31 @@ namespace AutoBattlerSharp
                                        description.Text,
                                        attributes));
 
+                ReleaseResources(melee);
+                ReleaseResources(range);
+                ReleaseResources(sturdiness);
+                ReleaseResources(resistance);
+                ReleaseResources(agility);
+                ReleaseResources(intelligence);
+                ReleaseResources(attacks);
+                ReleaseResources(health);
+                ReleaseResources(speed);
+                ReleaseResources(strength);
+                ReleaseResources(magic);
+
+
                 if (attributes.IsAlive)
                     _field.EveryoneDied = false;
 
                 RenderDynamicGUI();
-            };
-
-            Button add = new Button()
+            })
             {
                 Width = 64,
                 Height = 40,
                 Text = "Add"
             };
-            add.Click += addHandler;
 
-            EventHandler randomizeHandler = (sender, e) =>
+            SafeButton randomize = new SafeButton((sender, e) =>
             {
                 nameAdd.Text = _field.GetRandomName();
 
@@ -352,15 +341,12 @@ namespace AutoBattlerSharp
                 ((NumericUpDown)speed.Controls[0]).Value = (short)_random.Next(5, 30);
                 ((NumericUpDown)strength.Controls[0]).Value = (short)_random.Next(5, 30);
                 ((NumericUpDown)magic.Controls[0]).Value = (short)_random.Next(5, 30);
-            };
-
-            Button randomize = new Button()
+            })
             {
                 Width = 64,
                 Height = 40,
                 Text = "Random"
             };
-            randomize.Click += randomizeHandler;
 
             panelAdd.Controls.AddRange(new Control[]
             {
@@ -382,9 +368,6 @@ namespace AutoBattlerSharp
                 add,
                 randomize
             });
-
-            _events.Add(addHandler);
-            _events.Add(randomizeHandler);
 
             return panelAdd;
         }
