@@ -90,7 +90,7 @@ namespace AutoBattlerSharp
                 ReleaseResources(EnemiesFlowLayoutPanel);
 
                 foreach (Creature enemy in _field.Enemies)
-                    EnemiesFlowLayoutPanel.Controls.Add(GetHumanControl(enemy, _field.Enemies, true));
+                    EnemiesFlowLayoutPanel.Controls.Add(GetHumanControl(enemy, _field.Enemies, false));
 
                 if (!_fightStarted)
                     EnemiesFlowLayoutPanel.Controls.Add(GetAddControl(_field.Enemies));

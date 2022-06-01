@@ -37,7 +37,7 @@ namespace AutoBattlerSharp.Logic
             }
 
             Allies = new List<Human>();
-            PopulateCreatures(Allies, 1);
+            PopulateCreatures(Allies, (byte)_random.Next(1, 10));
 
             Allies[0].Weapon = new Sword("Sword of Doom", "Description", 100, 5, 2, 50);
             Allies[0].ArmourPieces = new List<Armour>
@@ -47,7 +47,7 @@ namespace AutoBattlerSharp.Logic
             };
 
             Enemies = new List<Human>();
-            PopulateCreatures(Enemies, 20);
+            PopulateCreatures(Enemies, (byte)_random.Next(1, 10));
 
             _allyTurn = true;
             if (_random.Next(0, 2) == 1)
