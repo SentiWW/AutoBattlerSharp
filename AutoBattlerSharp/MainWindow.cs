@@ -1,7 +1,8 @@
-using AutoBattlerSharp.GUI;
+using AutoBattlerSharp.GUI.CustomControls;
 using AutoBattlerSharp.Logic;
 using AutoBattlerSharp.Logic.Models;
 using AutoBattlerSharp.Logic.Models.Creatures;
+using System.Runtime.InteropServices;
 
 namespace AutoBattlerSharp
 {
@@ -42,67 +43,99 @@ namespace AutoBattlerSharp
             RenderDynamicGUI();
         }
 
-        private void ReleaseResources(Control control, bool deleteControl = false)
+        private void ReleaseResources(Control control, bool disposeControl = false)
         {
             foreach (Control sub in control.Controls)
             {
+                if (sub.Controls.Count > 0)
+                    ReleaseResources(sub);
+
                 sub.Controls.Clear();
                 sub.Dispose();
-            }  
+            }
 
             control.Controls.Clear();
-            
-            if (deleteControl)
+
+            if (disposeControl)
                 control.Dispose();
         }
 
+        // Cursed workaround to stop dynamic controls from blinking
+        [DllImport("user32.dll")]
+        private static extern long LockWindowUpdate(long Handle);
+
         private void RenderDynamicGUI()
         {
-            ReleaseResources(AlliesFlowLayoutPanel);
-            ReleaseResources(EnemiesFlowLayoutPanel);
-           
-            foreach (Creature ally in _field.Allies)
-                AlliesFlowLayoutPanel.Controls.Add(GetHumanControl(ally, _field.Allies, true));
+            try
+            {
+                LockWindowUpdate(AlliesFlowLayoutPanel.Handle.ToInt64());
 
-            foreach (Creature enemy in _field.Enemies)
-                EnemiesFlowLayoutPanel.Controls.Add(GetHumanControl(enemy, _field.Enemies, false));
+                ReleaseResources(AlliesFlowLayoutPanel);
 
-            if(!_fightStarted)
-                RenderAddEntities();
-        }
+                foreach (Creature ally in _field.Allies)
+                    AlliesFlowLayoutPanel.Controls.Add(GetHumanControl(ally, _field.Allies, true));
 
-        private void RenderAddEntities()
-        {
-            AlliesFlowLayoutPanel.Controls.Add(GetAddControl(_field.Allies));
-            EnemiesFlowLayoutPanel.Controls.Add(GetAddControl(_field.Enemies));
+                if (!_fightStarted)
+                    AlliesFlowLayoutPanel.Controls.Add(GetAddControl(_field.Allies));
+            }
+            finally
+            {
+                LockWindowUpdate(0);
+            }
+
+            try
+            {
+                LockWindowUpdate(EnemiesFlowLayoutPanel.Handle.ToInt64());
+
+                ReleaseResources(EnemiesFlowLayoutPanel);
+
+                foreach (Creature enemy in _field.Enemies)
+                    EnemiesFlowLayoutPanel.Controls.Add(GetHumanControl(enemy, _field.Enemies, true));
+
+                if (!_fightStarted)
+                    EnemiesFlowLayoutPanel.Controls.Add(GetAddControl(_field.Enemies));
+            }
+            finally
+            {
+                LockWindowUpdate(0);
+            }
         }
 
         private Control GetHumanControl(Creature fighter, List<Human> fighters, bool ally)
         {
-            Panel panel = new Panel();
-            panel.BorderStyle = BorderStyle.FixedSingle;
-            panel.Width = 256;
-            panel.Height = 128;
+            Panel panel = new Panel()
+            {
+                BorderStyle = BorderStyle.FixedSingle,
+                Width = 256,
+                Height = 128
+            };
 
-            Label name = new Label();
-            name.Height = 16;
-            name.Text = $"{fighter.Name}";
-            name.Dock = DockStyle.Top;
-            name.ForeColor = ally ? Color.Green : Color.Red;
-            name.TextAlign = ContentAlignment.MiddleCenter;
+            Label name = new Label()
+            {
+                Height = 16,
+                Text = $"{fighter.Name}",
+                Dock = DockStyle.Top,
+                ForeColor = ally ? Color.Green : Color.Red,
+                TextAlign = ContentAlignment.MiddleCenter
+            };
 
-            Label type = new Label();
-            type.Height = 16;
-            type.Text = (ally ? "(Ally)" : "(Enemy)");
-            type.Dock = DockStyle.Top;
-            type.ForeColor = ally ? Color.Green : Color.Red;
-            type.TextAlign = ContentAlignment.MiddleCenter;
+            Label type = new Label()
+            {
+                Height = 16,
+                Text = (ally ? "(Ally)" : "(Enemy)"),
+                Dock = DockStyle.Top,
+                ForeColor = ally ? Color.Green : Color.Red,
+                TextAlign = ContentAlignment.MiddleCenter
+            };
 
-            PictureBox health = new PictureBox();
-            health.Width = 168;
-            health.Height = 32;
-            health.Location = new Point(panel.Left + 8, panel.Bottom - 40);
-            health.BackColor = Color.Red;
+            PictureBox health = new PictureBox()
+            {
+                Width = 168,
+                Height = 32,
+                Location = new Point(panel.Left + 8, panel.Bottom - 40),
+                BackColor = Color.Red
+            };
+
             using (var bmp = new Bitmap(health.Width, health.Height))
             using (var gfx = Graphics.FromImage(bmp))
             using (var brush = new SolidBrush(Color.Green))
@@ -126,62 +159,75 @@ namespace AutoBattlerSharp
                 health.Image = (Bitmap)bmp.Clone();
             }
 
-            Label state = new Label();
-            state.Text = fighter.Attributes.IsAlive ? "ALIVE" : "DEAD";
-            state.Dock = DockStyle.Top;
-            state.ForeColor = fighter.Attributes.IsAlive ? Color.Green : Color.Red;
-            state.TextAlign = ContentAlignment.MiddleCenter;
-
-            Button inspect = new Button();
-            inspect.Location = new Point(panel.Right - 40, panel.Bottom - 40);
-            inspect.Width = 32;
-            inspect.Height = 32;
-            inspect.Text = "?";
-            inspect.Click += (sender, e) =>
+            Label state = new Label()
             {
-                MessageBox.Show(fighter.ToString());
+                Text = fighter.Attributes.IsAlive ? "ALIVE" : "DEAD",
+                Dock = DockStyle.Top,
+                ForeColor = fighter.Attributes.IsAlive ? Color.Green : Color.Red,
+                TextAlign = ContentAlignment.MiddleCenter
             };
 
-            Button remove = new Button();
-            remove.Location = new Point(panel.Right - 72, panel.Bottom - 40);
-            remove.Width = 32;
-            remove.Height = 32;
-            remove.Text = "-";
-            remove.Click += (sender, e) =>
+            SafeButton inspect = new SafeButton((sender, e) =>
+            {
+                MessageBox.Show(fighter.ToString());
+            })
+            {
+                Location = new Point(panel.Right - 40, panel.Bottom - 40),
+                Width = 32,
+                Height = 32,
+                Text = "?"
+            };
+
+            SafeButton remove = new SafeButton((sender, e) =>
             {
                 fighters.Remove((Human)fighter);
 
                 ReleaseResources(panel, true);
 
                 RenderDynamicGUI();
+            })
+            {
+                Location = new Point(panel.Right - 72, panel.Bottom - 40),
+                Width = 32,
+                Height = 32,
+                Text = "-"
             };
 
-            panel.Controls.Add(health);
-            panel.Controls.Add(state);
-            panel.Controls.Add(type);
-            panel.Controls.Add(name);
-            panel.Controls.Add(inspect);
-            panel.Controls.Add(remove);
+            panel.Controls.AddRange(new Control[]
+            {
+                health,
+                state,
+                type,
+                name,
+                inspect,
+                remove
+            });
 
             return panel;
         }
 
         private Control GetNumericUpDownWithLabel(string text)
         {
-            Panel panel = new Panel();
-            panel.Width = 64;
-            panel.Height = 40;
-            panel.BorderStyle = BorderStyle.FixedSingle;
+            Panel panel = new Panel()
+            {
+                Width = 64,
+                Height = 40,
+                BorderStyle = BorderStyle.FixedSingle
+            };
 
-            Label label = new Label();
-            label.Width = 64;
-            label.Height = 16;
-            label.Dock = DockStyle.Top;
-            label.Text = text;
+            Label label = new Label()
+            {
+                Width = 64,
+                Height = 16,
+                Dock = DockStyle.Top,
+                Text = text
+            };
 
-            NumericUpDown number = new NumericUpDown();
-            number.Width = 64;
-            number.Dock = DockStyle.Top;
+            NumericUpDown number = new NumericUpDown()
+            {
+                Width = 64,
+                Dock = DockStyle.Top
+            };
 
             panel.Controls.Add(number);
             panel.Controls.Add(label);
@@ -190,28 +236,37 @@ namespace AutoBattlerSharp
 
         private Control GetAddControl(List<Human> fighters)
         {
-            FlowLayoutPanel panelAdd = new FlowLayoutPanel();
-            panelAdd.BorderStyle = BorderStyle.FixedSingle;
-            panelAdd.Width = 256;
-            panelAdd.Height = 128;
-            panelAdd.AutoScroll = true;
+            FlowLayoutPanel panelAdd = new FlowLayoutPanel()
+            {
+                BorderStyle = BorderStyle.FixedSingle,
+                Width = 256,
+                Height = 128,
+                AutoScroll = true
+            };
 
-            TextBox nameAdd = new TextBox();
-            nameAdd.Dock = DockStyle.Top;
-            nameAdd.Text = "Name";
+            TextBox nameAdd = new TextBox()
+            {
+                Dock = DockStyle.Top,
+                Text = "Name"
+            };
 
-            TextBox description = new TextBox();
-            description.Dock = DockStyle.Top;
-            description.Text = "Description";
+            TextBox description = new TextBox()
+            { 
+                Dock = DockStyle.Top,
+                Text = "Description"
+            };
 
-            CheckBox isAlive = new CheckBox();
-            isAlive.Text = "Is alive?";
-            isAlive.Checked = true;
+            CheckBox isAlive = new CheckBox()
+            {
+                Text = "Is alive?",
+                Checked = true
+            };
 
-            CheckBox isAttackable = new CheckBox();
-            isAttackable.Text = "Is attackable?";
-            isAttackable.Checked = true;
-
+            CheckBox isAttackable = new CheckBox()
+            {
+                Text = "Is attackable?",
+                Checked = true
+            };
 
             var melee = GetNumericUpDownWithLabel("Melee");
             var range = GetNumericUpDownWithLabel("Range");
@@ -225,11 +280,7 @@ namespace AutoBattlerSharp
             var strength = GetNumericUpDownWithLabel("Strength");
             var magic = GetNumericUpDownWithLabel("Magic");
 
-            Button add = new Button();
-            add.Width = 64;
-            add.Height = 40;
-            add.Text = "Add";
-            add.Click += (sender, e) =>
+            SafeButton add = new SafeButton((sender, e) =>
             {
                 Attributes attributes = new Attributes();
                 attributes.IsAlive = isAlive.Checked;
@@ -251,17 +302,31 @@ namespace AutoBattlerSharp
                                        description.Text,
                                        attributes));
 
-                if(attributes.IsAlive)
+                ReleaseResources(melee);
+                ReleaseResources(range);
+                ReleaseResources(sturdiness);
+                ReleaseResources(resistance);
+                ReleaseResources(agility);
+                ReleaseResources(intelligence);
+                ReleaseResources(attacks);
+                ReleaseResources(health);
+                ReleaseResources(speed);
+                ReleaseResources(strength);
+                ReleaseResources(magic);
+
+
+                if (attributes.IsAlive)
                     _field.EveryoneDied = false;
 
                 RenderDynamicGUI();
+            })
+            {
+                Width = 64,
+                Height = 40,
+                Text = "Add"
             };
 
-            Button randomize = new Button();
-            randomize.Width = 64;
-            randomize.Height = 40;
-            randomize.Text = "Random";
-            randomize.Click += (sender, e) =>
+            SafeButton randomize = new SafeButton((sender, e) =>
             {
                 nameAdd.Text = _field.GetRandomName();
 
@@ -276,6 +341,11 @@ namespace AutoBattlerSharp
                 ((NumericUpDown)speed.Controls[0]).Value = (short)_random.Next(5, 30);
                 ((NumericUpDown)strength.Controls[0]).Value = (short)_random.Next(5, 30);
                 ((NumericUpDown)magic.Controls[0]).Value = (short)_random.Next(5, 30);
+            })
+            {
+                Width = 64,
+                Height = 40,
+                Text = "Random"
             };
 
             panelAdd.Controls.AddRange(new Control[]
