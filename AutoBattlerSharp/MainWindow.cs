@@ -2,6 +2,7 @@ using AutoBattlerSharp.GUI.CustomControls;
 using AutoBattlerSharp.Logic;
 using AutoBattlerSharp.Logic.Models;
 using AutoBattlerSharp.Logic.Models.Creatures;
+using AutoBattlerSharp.Logic.Models.Items;
 using System.Runtime.InteropServices;
 
 namespace AutoBattlerSharp
@@ -60,7 +61,11 @@ namespace AutoBattlerSharp
                 control.Dispose();
         }
 
-        // Cursed workaround to stop dynamic controls from blinking
+        /// <summary>
+        /// Cursed workaround to stop dynamic controls from blinking
+        /// </summary>
+        /// <param name="Handle"></param>
+        /// <returns></returns>
         [DllImport("user32.dll")]
         private static extern long LockWindowUpdate(long Handle);
 
@@ -234,13 +239,44 @@ namespace AutoBattlerSharp
             return panel;
         }
 
+        private Control GetComboBoxWithLabel(string text, IEnumerable<Item> items)
+        {
+            Panel panel = new Panel()
+            {
+                Width = 134,
+                Height = 40,
+                BorderStyle = BorderStyle.FixedSingle
+            };
+
+            Label label = new Label()
+            {
+                Width = 64,
+                Height = 16,
+                Dock = DockStyle.Top,
+                Text = text
+            };
+
+            ComboBox combo = new ComboBox()
+            {
+                Width = 134,
+                Dock = DockStyle.Top
+            };
+            combo.Items.AddRange(items.Select(item => item.Name)
+                                      .ToArray());
+
+            panel.Controls.Add(combo);
+            panel.Controls.Add(label);
+
+            return panel;
+        }
+
         private Control GetAddControl(List<Human> fighters)
         {
             FlowLayoutPanel panelAdd = new FlowLayoutPanel()
             {
                 BorderStyle = BorderStyle.FixedSingle,
                 Width = 256,
-                Height = 128,
+                Height = 256,
                 AutoScroll = true
             };
 
@@ -279,6 +315,7 @@ namespace AutoBattlerSharp
             var speed = GetNumericUpDownWithLabel("Speed");
             var strength = GetNumericUpDownWithLabel("Strength");
             var magic = GetNumericUpDownWithLabel("Magic");
+            var weapon = GetComboBoxWithLabel("Weapon", _field.Weapons);
 
             SafeButton add = new SafeButton((sender, e) =>
             {
@@ -298,9 +335,12 @@ namespace AutoBattlerSharp
                 attributes.Strength = (short)((NumericUpDown)strength.Controls[0]).Value;
                 attributes.Magic = (short)((NumericUpDown)magic.Controls[0]).Value;
 
-                fighters.Add(new Human(nameAdd.Text,
-                                       description.Text,
-                                       attributes));
+                Human human = new Human(nameAdd.Text, description.Text, attributes);
+
+                human.Weapon = _field.Weapons.Where(item => item.Name == ((ComboBox)weapon.Controls[0]).Text)
+                                             .FirstOrDefault();
+
+                fighters.Add(human);
 
                 ReleaseResources(melee);
                 ReleaseResources(range);
@@ -365,8 +405,9 @@ namespace AutoBattlerSharp
                 speed,
                 strength,
                 magic,
+                weapon,
                 add,
-                randomize
+                randomize,
             });
 
             return panelAdd;
@@ -421,6 +462,28 @@ namespace AutoBattlerSharp
         private void MainTimerIntervalNumericUpDown_ValueChanged(object sender, EventArgs e)
         {
             GameTimer.Interval = (int)MainTimerIntervalNumericUpDown.Value;
+        }
+
+        private void SwordAddButton_Click(object sender, EventArgs e)
+        {
+            if (_field.Weapons
+                     .Select(weapon => weapon.Name)
+                     .Contains(SwordNameTextBox.Text))
+            {
+                MessageBox.Show("A weapon with this name already exists!");
+                return;
+            }
+
+            Sword sword = new Sword(SwordNameTextBox.Text,
+                                    SwordDescriptionTextBox.Text,
+                                    (short)SwordValueNumericUpDown.Value,
+                                    (short)SwordWeightNumericUpDown.Value,
+                                    (short)SwordAttackPointsNumericUpDown.Value,
+                                    (float)SwordAccuracyNumericUpDown.Value);
+
+            _field.Weapons.Add(sword);
+
+            RenderDynamicGUI();
         }
     }
 }

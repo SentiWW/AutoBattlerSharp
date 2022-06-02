@@ -46,6 +46,23 @@
             this.AutoplayButton = new System.Windows.Forms.Button();
             this.MainTimerIntervalNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.IntervalLabel = new System.Windows.Forms.Label();
+            this.WeaponsPanel = new System.Windows.Forms.Panel();
+            this.WeaponsTabControl = new System.Windows.Forms.TabControl();
+            this.SwordTabPage = new System.Windows.Forms.TabPage();
+            this.SwordAddButton = new System.Windows.Forms.Button();
+            this.SwordAccuracyNumericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.SwordAccuracyLabel = new System.Windows.Forms.Label();
+            this.SwordAttackPointsNumericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.SwordAttackPointsLabel = new System.Windows.Forms.Label();
+            this.SwordWeightNumericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.SwordWeightLabel = new System.Windows.Forms.Label();
+            this.SwordValueNumericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.SwordValueLabel = new System.Windows.Forms.Label();
+            this.SwordDescriptionTextBox = new System.Windows.Forms.TextBox();
+            this.SwordDescriptionLabel = new System.Windows.Forms.Label();
+            this.SwordNameTextBox = new System.Windows.Forms.TextBox();
+            this.SwordNameLabel = new System.Windows.Forms.Label();
+            this.MagicWandTabPage = new System.Windows.Forms.TabPage();
             this.FightLogRichTextBox = new System.Windows.Forms.RichTextBox();
             this.GameTimer = new System.Windows.Forms.Timer(this.components);
             this.FightersSaveFileDialog = new System.Windows.Forms.SaveFileDialog();
@@ -67,6 +84,13 @@
             this.BottomLeftFlowLayoutPanel.SuspendLayout();
             this.GameControlsPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MainTimerIntervalNumericUpDown)).BeginInit();
+            this.WeaponsPanel.SuspendLayout();
+            this.WeaponsTabControl.SuspendLayout();
+            this.SwordTabPage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.SwordAccuracyNumericUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.SwordAttackPointsNumericUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.SwordWeightNumericUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.SwordValueNumericUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // TopToolStrip
@@ -112,7 +136,7 @@
             this.MainPanelPadded.Location = new System.Drawing.Point(0, 25);
             this.MainPanelPadded.Name = "MainPanelPadded";
             this.MainPanelPadded.Padding = new System.Windows.Forms.Padding(5);
-            this.MainPanelPadded.Size = new System.Drawing.Size(800, 425);
+            this.MainPanelPadded.Size = new System.Drawing.Size(800, 523);
             this.MainPanelPadded.TabIndex = 1;
             // 
             // HorizontalSplitContainer
@@ -131,8 +155,8 @@
             // 
             this.HorizontalSplitContainer.Panel2.AutoScroll = true;
             this.HorizontalSplitContainer.Panel2.Controls.Add(this.BottomSplitContainerVertical);
-            this.HorizontalSplitContainer.Size = new System.Drawing.Size(790, 415);
-            this.HorizontalSplitContainer.SplitterDistance = 207;
+            this.HorizontalSplitContainer.Size = new System.Drawing.Size(790, 513);
+            this.HorizontalSplitContainer.SplitterDistance = 255;
             this.HorizontalSplitContainer.TabIndex = 0;
             // 
             // FightersSplitContainer
@@ -149,7 +173,7 @@
             // FightersSplitContainer.Panel2
             // 
             this.FightersSplitContainer.Panel2.Controls.Add(this.EnemiesFlowLayoutPanel);
-            this.FightersSplitContainer.Size = new System.Drawing.Size(788, 205);
+            this.FightersSplitContainer.Size = new System.Drawing.Size(788, 253);
             this.FightersSplitContainer.SplitterDistance = 394;
             this.FightersSplitContainer.TabIndex = 0;
             // 
@@ -160,7 +184,7 @@
             this.AlliesFlowLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.AlliesFlowLayoutPanel.Location = new System.Drawing.Point(0, 0);
             this.AlliesFlowLayoutPanel.Name = "AlliesFlowLayoutPanel";
-            this.AlliesFlowLayoutPanel.Size = new System.Drawing.Size(394, 205);
+            this.AlliesFlowLayoutPanel.Size = new System.Drawing.Size(394, 253);
             this.AlliesFlowLayoutPanel.TabIndex = 0;
             // 
             // EnemiesFlowLayoutPanel
@@ -170,7 +194,7 @@
             this.EnemiesFlowLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.EnemiesFlowLayoutPanel.Location = new System.Drawing.Point(0, 0);
             this.EnemiesFlowLayoutPanel.Name = "EnemiesFlowLayoutPanel";
-            this.EnemiesFlowLayoutPanel.Size = new System.Drawing.Size(390, 205);
+            this.EnemiesFlowLayoutPanel.Size = new System.Drawing.Size(390, 253);
             this.EnemiesFlowLayoutPanel.TabIndex = 0;
             // 
             // BottomSplitContainerVertical
@@ -188,17 +212,19 @@
             // BottomSplitContainerVertical.Panel2
             // 
             this.BottomSplitContainerVertical.Panel2.Controls.Add(this.FightLogRichTextBox);
-            this.BottomSplitContainerVertical.Size = new System.Drawing.Size(790, 204);
-            this.BottomSplitContainerVertical.SplitterDistance = 150;
+            this.BottomSplitContainerVertical.Size = new System.Drawing.Size(790, 254);
+            this.BottomSplitContainerVertical.SplitterDistance = 250;
             this.BottomSplitContainerVertical.TabIndex = 0;
             // 
             // BottomLeftFlowLayoutPanel
             // 
+            this.BottomLeftFlowLayoutPanel.AutoScroll = true;
             this.BottomLeftFlowLayoutPanel.Controls.Add(this.GameControlsPanel);
+            this.BottomLeftFlowLayoutPanel.Controls.Add(this.WeaponsPanel);
             this.BottomLeftFlowLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.BottomLeftFlowLayoutPanel.Location = new System.Drawing.Point(0, 0);
             this.BottomLeftFlowLayoutPanel.Name = "BottomLeftFlowLayoutPanel";
-            this.BottomLeftFlowLayoutPanel.Size = new System.Drawing.Size(148, 202);
+            this.BottomLeftFlowLayoutPanel.Size = new System.Drawing.Size(248, 252);
             this.BottomLeftFlowLayoutPanel.TabIndex = 5;
             // 
             // GameControlsPanel
@@ -270,6 +296,180 @@
             this.IntervalLabel.TabIndex = 4;
             this.IntervalLabel.Text = "Timer Interval";
             // 
+            // WeaponsPanel
+            // 
+            this.WeaponsPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.WeaponsPanel.Controls.Add(this.WeaponsTabControl);
+            this.WeaponsPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.WeaponsPanel.Location = new System.Drawing.Point(3, 101);
+            this.WeaponsPanel.Name = "WeaponsPanel";
+            this.WeaponsPanel.Padding = new System.Windows.Forms.Padding(3);
+            this.WeaponsPanel.Size = new System.Drawing.Size(142, 290);
+            this.WeaponsPanel.TabIndex = 6;
+            // 
+            // WeaponsTabControl
+            // 
+            this.WeaponsTabControl.Controls.Add(this.SwordTabPage);
+            this.WeaponsTabControl.Controls.Add(this.MagicWandTabPage);
+            this.WeaponsTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.WeaponsTabControl.Location = new System.Drawing.Point(3, 3);
+            this.WeaponsTabControl.Name = "WeaponsTabControl";
+            this.WeaponsTabControl.SelectedIndex = 0;
+            this.WeaponsTabControl.Size = new System.Drawing.Size(134, 282);
+            this.WeaponsTabControl.TabIndex = 0;
+            // 
+            // SwordTabPage
+            // 
+            this.SwordTabPage.Controls.Add(this.SwordAddButton);
+            this.SwordTabPage.Controls.Add(this.SwordAccuracyNumericUpDown);
+            this.SwordTabPage.Controls.Add(this.SwordAccuracyLabel);
+            this.SwordTabPage.Controls.Add(this.SwordAttackPointsNumericUpDown);
+            this.SwordTabPage.Controls.Add(this.SwordAttackPointsLabel);
+            this.SwordTabPage.Controls.Add(this.SwordWeightNumericUpDown);
+            this.SwordTabPage.Controls.Add(this.SwordWeightLabel);
+            this.SwordTabPage.Controls.Add(this.SwordValueNumericUpDown);
+            this.SwordTabPage.Controls.Add(this.SwordValueLabel);
+            this.SwordTabPage.Controls.Add(this.SwordDescriptionTextBox);
+            this.SwordTabPage.Controls.Add(this.SwordDescriptionLabel);
+            this.SwordTabPage.Controls.Add(this.SwordNameTextBox);
+            this.SwordTabPage.Controls.Add(this.SwordNameLabel);
+            this.SwordTabPage.Location = new System.Drawing.Point(4, 24);
+            this.SwordTabPage.Name = "SwordTabPage";
+            this.SwordTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.SwordTabPage.Size = new System.Drawing.Size(126, 254);
+            this.SwordTabPage.TabIndex = 0;
+            this.SwordTabPage.Text = "Sword";
+            this.SwordTabPage.UseVisualStyleBackColor = true;
+            // 
+            // SwordAddButton
+            // 
+            this.SwordAddButton.Dock = System.Windows.Forms.DockStyle.Top;
+            this.SwordAddButton.Location = new System.Drawing.Point(3, 231);
+            this.SwordAddButton.Name = "SwordAddButton";
+            this.SwordAddButton.Size = new System.Drawing.Size(120, 23);
+            this.SwordAddButton.TabIndex = 12;
+            this.SwordAddButton.Text = "Add";
+            this.SwordAddButton.UseVisualStyleBackColor = true;
+            this.SwordAddButton.Click += new System.EventHandler(this.SwordAddButton_Click);
+            // 
+            // SwordAccuracyNumericUpDown
+            // 
+            this.SwordAccuracyNumericUpDown.Dock = System.Windows.Forms.DockStyle.Top;
+            this.SwordAccuracyNumericUpDown.Location = new System.Drawing.Point(3, 208);
+            this.SwordAccuracyNumericUpDown.Name = "SwordAccuracyNumericUpDown";
+            this.SwordAccuracyNumericUpDown.Size = new System.Drawing.Size(120, 23);
+            this.SwordAccuracyNumericUpDown.TabIndex = 11;
+            // 
+            // SwordAccuracyLabel
+            // 
+            this.SwordAccuracyLabel.AutoSize = true;
+            this.SwordAccuracyLabel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.SwordAccuracyLabel.Location = new System.Drawing.Point(3, 193);
+            this.SwordAccuracyLabel.Name = "SwordAccuracyLabel";
+            this.SwordAccuracyLabel.Size = new System.Drawing.Size(56, 15);
+            this.SwordAccuracyLabel.TabIndex = 10;
+            this.SwordAccuracyLabel.Text = "Accuracy";
+            // 
+            // SwordAttackPointsNumericUpDown
+            // 
+            this.SwordAttackPointsNumericUpDown.Dock = System.Windows.Forms.DockStyle.Top;
+            this.SwordAttackPointsNumericUpDown.Location = new System.Drawing.Point(3, 170);
+            this.SwordAttackPointsNumericUpDown.Name = "SwordAttackPointsNumericUpDown";
+            this.SwordAttackPointsNumericUpDown.Size = new System.Drawing.Size(120, 23);
+            this.SwordAttackPointsNumericUpDown.TabIndex = 9;
+            // 
+            // SwordAttackPointsLabel
+            // 
+            this.SwordAttackPointsLabel.AutoSize = true;
+            this.SwordAttackPointsLabel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.SwordAttackPointsLabel.Location = new System.Drawing.Point(3, 155);
+            this.SwordAttackPointsLabel.Name = "SwordAttackPointsLabel";
+            this.SwordAttackPointsLabel.Size = new System.Drawing.Size(77, 15);
+            this.SwordAttackPointsLabel.TabIndex = 8;
+            this.SwordAttackPointsLabel.Text = "Attack Points";
+            // 
+            // SwordWeightNumericUpDown
+            // 
+            this.SwordWeightNumericUpDown.Dock = System.Windows.Forms.DockStyle.Top;
+            this.SwordWeightNumericUpDown.Location = new System.Drawing.Point(3, 132);
+            this.SwordWeightNumericUpDown.Name = "SwordWeightNumericUpDown";
+            this.SwordWeightNumericUpDown.Size = new System.Drawing.Size(120, 23);
+            this.SwordWeightNumericUpDown.TabIndex = 7;
+            // 
+            // SwordWeightLabel
+            // 
+            this.SwordWeightLabel.AutoSize = true;
+            this.SwordWeightLabel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.SwordWeightLabel.Location = new System.Drawing.Point(3, 117);
+            this.SwordWeightLabel.Name = "SwordWeightLabel";
+            this.SwordWeightLabel.Size = new System.Drawing.Size(45, 15);
+            this.SwordWeightLabel.TabIndex = 6;
+            this.SwordWeightLabel.Text = "Weight";
+            // 
+            // SwordValueNumericUpDown
+            // 
+            this.SwordValueNumericUpDown.Dock = System.Windows.Forms.DockStyle.Top;
+            this.SwordValueNumericUpDown.Location = new System.Drawing.Point(3, 94);
+            this.SwordValueNumericUpDown.Name = "SwordValueNumericUpDown";
+            this.SwordValueNumericUpDown.Size = new System.Drawing.Size(120, 23);
+            this.SwordValueNumericUpDown.TabIndex = 5;
+            // 
+            // SwordValueLabel
+            // 
+            this.SwordValueLabel.AutoSize = true;
+            this.SwordValueLabel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.SwordValueLabel.Location = new System.Drawing.Point(3, 79);
+            this.SwordValueLabel.Name = "SwordValueLabel";
+            this.SwordValueLabel.Size = new System.Drawing.Size(35, 15);
+            this.SwordValueLabel.TabIndex = 4;
+            this.SwordValueLabel.Text = "Value";
+            // 
+            // SwordDescriptionTextBox
+            // 
+            this.SwordDescriptionTextBox.Dock = System.Windows.Forms.DockStyle.Top;
+            this.SwordDescriptionTextBox.Location = new System.Drawing.Point(3, 56);
+            this.SwordDescriptionTextBox.Name = "SwordDescriptionTextBox";
+            this.SwordDescriptionTextBox.Size = new System.Drawing.Size(120, 23);
+            this.SwordDescriptionTextBox.TabIndex = 3;
+            // 
+            // SwordDescriptionLabel
+            // 
+            this.SwordDescriptionLabel.AutoSize = true;
+            this.SwordDescriptionLabel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.SwordDescriptionLabel.Location = new System.Drawing.Point(3, 41);
+            this.SwordDescriptionLabel.Name = "SwordDescriptionLabel";
+            this.SwordDescriptionLabel.Size = new System.Drawing.Size(67, 15);
+            this.SwordDescriptionLabel.TabIndex = 2;
+            this.SwordDescriptionLabel.Text = "Description";
+            // 
+            // SwordNameTextBox
+            // 
+            this.SwordNameTextBox.Dock = System.Windows.Forms.DockStyle.Top;
+            this.SwordNameTextBox.Location = new System.Drawing.Point(3, 18);
+            this.SwordNameTextBox.Name = "SwordNameTextBox";
+            this.SwordNameTextBox.Size = new System.Drawing.Size(120, 23);
+            this.SwordNameTextBox.TabIndex = 1;
+            // 
+            // SwordNameLabel
+            // 
+            this.SwordNameLabel.AutoSize = true;
+            this.SwordNameLabel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.SwordNameLabel.Location = new System.Drawing.Point(3, 3);
+            this.SwordNameLabel.Name = "SwordNameLabel";
+            this.SwordNameLabel.Size = new System.Drawing.Size(39, 15);
+            this.SwordNameLabel.TabIndex = 0;
+            this.SwordNameLabel.Text = "Name";
+            // 
+            // MagicWandTabPage
+            // 
+            this.MagicWandTabPage.Location = new System.Drawing.Point(4, 24);
+            this.MagicWandTabPage.Name = "MagicWandTabPage";
+            this.MagicWandTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.MagicWandTabPage.Size = new System.Drawing.Size(126, 254);
+            this.MagicWandTabPage.TabIndex = 1;
+            this.MagicWandTabPage.Text = "Magic Wand";
+            this.MagicWandTabPage.UseVisualStyleBackColor = true;
+            // 
             // FightLogRichTextBox
             // 
             this.FightLogRichTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
@@ -277,7 +477,7 @@
             this.FightLogRichTextBox.Location = new System.Drawing.Point(0, 0);
             this.FightLogRichTextBox.Name = "FightLogRichTextBox";
             this.FightLogRichTextBox.ReadOnly = true;
-            this.FightLogRichTextBox.Size = new System.Drawing.Size(634, 202);
+            this.FightLogRichTextBox.Size = new System.Drawing.Size(534, 252);
             this.FightLogRichTextBox.TabIndex = 1;
             this.FightLogRichTextBox.Text = "";
             this.FightLogRichTextBox.WordWrap = false;
@@ -301,7 +501,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(800, 548);
             this.Controls.Add(this.MainPanelPadded);
             this.Controls.Add(this.TopToolStrip);
             this.Name = "MainWindow";
@@ -326,6 +526,14 @@
             this.GameControlsPanel.ResumeLayout(false);
             this.GameControlsPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MainTimerIntervalNumericUpDown)).EndInit();
+            this.WeaponsPanel.ResumeLayout(false);
+            this.WeaponsTabControl.ResumeLayout(false);
+            this.SwordTabPage.ResumeLayout(false);
+            this.SwordTabPage.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.SwordAccuracyNumericUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.SwordAttackPointsNumericUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.SwordWeightNumericUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.SwordValueNumericUpDown)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -353,5 +561,22 @@
         private Label IntervalLabel;
         private FlowLayoutPanel BottomLeftFlowLayoutPanel;
         private Panel GameControlsPanel;
+        private Panel WeaponsPanel;
+        private TabControl WeaponsTabControl;
+        private TabPage SwordTabPage;
+        private TabPage MagicWandTabPage;
+        private TextBox SwordNameTextBox;
+        private Label SwordNameLabel;
+        private Label SwordDescriptionLabel;
+        private TextBox SwordDescriptionTextBox;
+        private NumericUpDown SwordWeightNumericUpDown;
+        private Label SwordWeightLabel;
+        private NumericUpDown SwordValueNumericUpDown;
+        private Label SwordValueLabel;
+        private NumericUpDown SwordAccuracyNumericUpDown;
+        private Label SwordAccuracyLabel;
+        private NumericUpDown SwordAttackPointsNumericUpDown;
+        private Label SwordAttackPointsLabel;
+        private Button SwordAddButton;
     }
 }

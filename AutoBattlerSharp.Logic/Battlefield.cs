@@ -28,6 +28,12 @@ namespace AutoBattlerSharp.Logic
         [JsonInclude]
         public List<Human> Enemies;
         public bool EveryoneDied = false;
+        [JsonPropertyName("weapons")]
+        [JsonInclude]
+        public List<Weapon> Weapons;
+        [JsonPropertyName("armours")]
+        [JsonInclude]
+        public List<Armour> Armours;
 
         public Battlefield()
         {
@@ -36,15 +42,11 @@ namespace AutoBattlerSharp.Logic
                 _names = reader.ReadToEnd().Trim().Replace('\r', ' ').Split("\n");
             }
 
+            Weapons = new();
+            Armours = new();
+
             Allies = new List<Human>();
             PopulateCreatures(Allies, (byte)_random.Next(1, 10));
-
-            Allies[0].Weapon = new Sword("Sword of Doom", "Description", 100, 5, 2, 50);
-            Allies[0].ArmourPieces = new List<Armour>
-            {
-                new Armour("Helmet", "Helmet", 100, 50, 10),
-                new Armour("Plate", "Plate", 100, 50, 20)
-            };
 
             Enemies = new List<Human>();
             PopulateCreatures(Enemies, (byte)_random.Next(1, 10));
