@@ -467,8 +467,8 @@ namespace AutoBattlerSharp
         private void SwordAddButton_Click(object sender, EventArgs e)
         {
             if (_field.Weapons
-                     .Select(weapon => weapon.Name)
-                     .Contains(SwordNameTextBox.Text))
+                      .Select(weapon => weapon.Name)
+                      .Contains(SwordNameTextBox.Text))
             {
                 MessageBox.Show("A weapon with this name already exists!");
                 return;
@@ -482,6 +482,27 @@ namespace AutoBattlerSharp
                                     (float)SwordAccuracyNumericUpDown.Value);
 
             _field.Weapons.Add(sword);
+
+            RenderDynamicGUI();
+        }
+
+        private void MagicWandAddButton_Click(object sender, EventArgs e)
+        {
+            if (_field.Weapons
+                      .Select(weapon => weapon.Name)
+                      .Contains(MagicWandNameTextBox.Text))
+            {
+                MessageBox.Show("A weapon with this name already exists!");
+                return;
+            }
+
+            MagicWand wand = new MagicWand(MagicWandNameTextBox.Text,
+                                           MagicWandDescriptionTextBox.Text,
+                                           (short)MagicWandValueNumericUpDown.Value,
+                                           (short)MagicWandWeightNumericUpDown.Value,
+                                           (short)MagicWandAttackPointsNumericUpDown.Value);
+
+            _field.Weapons.Add(wand);
 
             RenderDynamicGUI();
         }

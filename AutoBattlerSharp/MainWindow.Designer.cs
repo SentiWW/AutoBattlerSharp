@@ -63,6 +63,17 @@
             this.SwordNameTextBox = new System.Windows.Forms.TextBox();
             this.SwordNameLabel = new System.Windows.Forms.Label();
             this.MagicWandTabPage = new System.Windows.Forms.TabPage();
+            this.MagicWandAddButton = new System.Windows.Forms.Button();
+            this.MagicWandAttackPointsNumericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.MagicWandAttackPointsLabel = new System.Windows.Forms.Label();
+            this.MagicWandWeightNumericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.MagicWandWeightLabel = new System.Windows.Forms.Label();
+            this.MagicWandValueNumericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.MagicWandValueLabel = new System.Windows.Forms.Label();
+            this.MagicWandDescriptionTextBox = new System.Windows.Forms.TextBox();
+            this.MagicWandDescriptionLabel = new System.Windows.Forms.Label();
+            this.MagicWandNameTextBox = new System.Windows.Forms.TextBox();
+            this.MagicWandNameLabel = new System.Windows.Forms.Label();
             this.FightLogRichTextBox = new System.Windows.Forms.RichTextBox();
             this.GameTimer = new System.Windows.Forms.Timer(this.components);
             this.FightersSaveFileDialog = new System.Windows.Forms.SaveFileDialog();
@@ -91,6 +102,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.SwordAttackPointsNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.SwordWeightNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.SwordValueNumericUpDown)).BeginInit();
+            this.MagicWandTabPage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.MagicWandAttackPointsNumericUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.MagicWandWeightNumericUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.MagicWandValueNumericUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // TopToolStrip
@@ -462,6 +477,17 @@
             // 
             // MagicWandTabPage
             // 
+            this.MagicWandTabPage.Controls.Add(this.MagicWandAddButton);
+            this.MagicWandTabPage.Controls.Add(this.MagicWandAttackPointsNumericUpDown);
+            this.MagicWandTabPage.Controls.Add(this.MagicWandAttackPointsLabel);
+            this.MagicWandTabPage.Controls.Add(this.MagicWandWeightNumericUpDown);
+            this.MagicWandTabPage.Controls.Add(this.MagicWandWeightLabel);
+            this.MagicWandTabPage.Controls.Add(this.MagicWandValueNumericUpDown);
+            this.MagicWandTabPage.Controls.Add(this.MagicWandValueLabel);
+            this.MagicWandTabPage.Controls.Add(this.MagicWandDescriptionTextBox);
+            this.MagicWandTabPage.Controls.Add(this.MagicWandDescriptionLabel);
+            this.MagicWandTabPage.Controls.Add(this.MagicWandNameTextBox);
+            this.MagicWandTabPage.Controls.Add(this.MagicWandNameLabel);
             this.MagicWandTabPage.Location = new System.Drawing.Point(4, 24);
             this.MagicWandTabPage.Name = "MagicWandTabPage";
             this.MagicWandTabPage.Padding = new System.Windows.Forms.Padding(3);
@@ -469,6 +495,107 @@
             this.MagicWandTabPage.TabIndex = 1;
             this.MagicWandTabPage.Text = "Magic Wand";
             this.MagicWandTabPage.UseVisualStyleBackColor = true;
+            // 
+            // MagicWandAddButton
+            // 
+            this.MagicWandAddButton.Dock = System.Windows.Forms.DockStyle.Top;
+            this.MagicWandAddButton.Location = new System.Drawing.Point(3, 193);
+            this.MagicWandAddButton.Name = "MagicWandAddButton";
+            this.MagicWandAddButton.Size = new System.Drawing.Size(120, 23);
+            this.MagicWandAddButton.TabIndex = 25;
+            this.MagicWandAddButton.Text = "Add";
+            this.MagicWandAddButton.UseVisualStyleBackColor = true;
+            this.MagicWandAddButton.Click += new System.EventHandler(this.MagicWandAddButton_Click);
+            // 
+            // MagicWandAttackPointsNumericUpDown
+            // 
+            this.MagicWandAttackPointsNumericUpDown.Dock = System.Windows.Forms.DockStyle.Top;
+            this.MagicWandAttackPointsNumericUpDown.Location = new System.Drawing.Point(3, 170);
+            this.MagicWandAttackPointsNumericUpDown.Name = "MagicWandAttackPointsNumericUpDown";
+            this.MagicWandAttackPointsNumericUpDown.Size = new System.Drawing.Size(120, 23);
+            this.MagicWandAttackPointsNumericUpDown.TabIndex = 22;
+            // 
+            // MagicWandAttackPointsLabel
+            // 
+            this.MagicWandAttackPointsLabel.AutoSize = true;
+            this.MagicWandAttackPointsLabel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.MagicWandAttackPointsLabel.Location = new System.Drawing.Point(3, 155);
+            this.MagicWandAttackPointsLabel.Name = "MagicWandAttackPointsLabel";
+            this.MagicWandAttackPointsLabel.Size = new System.Drawing.Size(77, 15);
+            this.MagicWandAttackPointsLabel.TabIndex = 21;
+            this.MagicWandAttackPointsLabel.Text = "Attack Points";
+            // 
+            // MagicWandWeightNumericUpDown
+            // 
+            this.MagicWandWeightNumericUpDown.Dock = System.Windows.Forms.DockStyle.Top;
+            this.MagicWandWeightNumericUpDown.Location = new System.Drawing.Point(3, 132);
+            this.MagicWandWeightNumericUpDown.Name = "MagicWandWeightNumericUpDown";
+            this.MagicWandWeightNumericUpDown.Size = new System.Drawing.Size(120, 23);
+            this.MagicWandWeightNumericUpDown.TabIndex = 20;
+            // 
+            // MagicWandWeightLabel
+            // 
+            this.MagicWandWeightLabel.AutoSize = true;
+            this.MagicWandWeightLabel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.MagicWandWeightLabel.Location = new System.Drawing.Point(3, 117);
+            this.MagicWandWeightLabel.Name = "MagicWandWeightLabel";
+            this.MagicWandWeightLabel.Size = new System.Drawing.Size(45, 15);
+            this.MagicWandWeightLabel.TabIndex = 19;
+            this.MagicWandWeightLabel.Text = "Weight";
+            // 
+            // MagicWandValueNumericUpDown
+            // 
+            this.MagicWandValueNumericUpDown.Dock = System.Windows.Forms.DockStyle.Top;
+            this.MagicWandValueNumericUpDown.Location = new System.Drawing.Point(3, 94);
+            this.MagicWandValueNumericUpDown.Name = "MagicWandValueNumericUpDown";
+            this.MagicWandValueNumericUpDown.Size = new System.Drawing.Size(120, 23);
+            this.MagicWandValueNumericUpDown.TabIndex = 18;
+            // 
+            // MagicWandValueLabel
+            // 
+            this.MagicWandValueLabel.AutoSize = true;
+            this.MagicWandValueLabel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.MagicWandValueLabel.Location = new System.Drawing.Point(3, 79);
+            this.MagicWandValueLabel.Name = "MagicWandValueLabel";
+            this.MagicWandValueLabel.Size = new System.Drawing.Size(35, 15);
+            this.MagicWandValueLabel.TabIndex = 17;
+            this.MagicWandValueLabel.Text = "Value";
+            // 
+            // MagicWandDescriptionTextBox
+            // 
+            this.MagicWandDescriptionTextBox.Dock = System.Windows.Forms.DockStyle.Top;
+            this.MagicWandDescriptionTextBox.Location = new System.Drawing.Point(3, 56);
+            this.MagicWandDescriptionTextBox.Name = "MagicWandDescriptionTextBox";
+            this.MagicWandDescriptionTextBox.Size = new System.Drawing.Size(120, 23);
+            this.MagicWandDescriptionTextBox.TabIndex = 16;
+            // 
+            // MagicWandDescriptionLabel
+            // 
+            this.MagicWandDescriptionLabel.AutoSize = true;
+            this.MagicWandDescriptionLabel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.MagicWandDescriptionLabel.Location = new System.Drawing.Point(3, 41);
+            this.MagicWandDescriptionLabel.Name = "MagicWandDescriptionLabel";
+            this.MagicWandDescriptionLabel.Size = new System.Drawing.Size(67, 15);
+            this.MagicWandDescriptionLabel.TabIndex = 15;
+            this.MagicWandDescriptionLabel.Text = "Description";
+            // 
+            // MagicWandNameTextBox
+            // 
+            this.MagicWandNameTextBox.Dock = System.Windows.Forms.DockStyle.Top;
+            this.MagicWandNameTextBox.Location = new System.Drawing.Point(3, 18);
+            this.MagicWandNameTextBox.Name = "MagicWandNameTextBox";
+            this.MagicWandNameTextBox.Size = new System.Drawing.Size(120, 23);
+            this.MagicWandNameTextBox.TabIndex = 14;
+            // 
+            // MagicWandNameLabel
+            // 
+            this.MagicWandNameLabel.AutoSize = true;
+            this.MagicWandNameLabel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.MagicWandNameLabel.Location = new System.Drawing.Point(3, 3);
+            this.MagicWandNameLabel.Name = "MagicWandNameLabel";
+            this.MagicWandNameLabel.Size = new System.Drawing.Size(39, 15);
+            this.MagicWandNameLabel.TabIndex = 13;
+            this.MagicWandNameLabel.Text = "Name";
             // 
             // FightLogRichTextBox
             // 
@@ -534,6 +661,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.SwordAttackPointsNumericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.SwordWeightNumericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.SwordValueNumericUpDown)).EndInit();
+            this.MagicWandTabPage.ResumeLayout(false);
+            this.MagicWandTabPage.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.MagicWandAttackPointsNumericUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.MagicWandWeightNumericUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.MagicWandValueNumericUpDown)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -578,5 +710,16 @@
         private NumericUpDown SwordAttackPointsNumericUpDown;
         private Label SwordAttackPointsLabel;
         private Button SwordAddButton;
+        private Button MagicWandAddButton;
+        private NumericUpDown MagicWandAttackPointsNumericUpDown;
+        private Label MagicWandAttackPointsLabel;
+        private NumericUpDown MagicWandWeightNumericUpDown;
+        private Label MagicWandWeightLabel;
+        private NumericUpDown MagicWandValueNumericUpDown;
+        private Label MagicWandValueLabel;
+        private TextBox MagicWandDescriptionTextBox;
+        private Label MagicWandDescriptionLabel;
+        private TextBox MagicWandNameTextBox;
+        private Label MagicWandNameLabel;
     }
 }
