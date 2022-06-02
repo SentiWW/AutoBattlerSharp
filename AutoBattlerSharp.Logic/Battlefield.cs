@@ -113,7 +113,12 @@ namespace AutoBattlerSharp.Logic
                 if (attacker is null || target is null)
                     return info;
 
-                info.Information = attacker.Attack(target, info).Information;
+                info.Attacker = (Human)attacker;
+                info.Weapon = ((Human)attacker).Weapon;
+                info.Defender = (Human)target;
+                info.Armour = ((Human)target).Armour;
+
+                attacker.Attack(target, info);
             }
 
             _allyTurn = _allyTurn ? false : true;

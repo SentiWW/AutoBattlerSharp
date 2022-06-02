@@ -38,7 +38,7 @@ namespace AutoBattlerSharp
             if (!_fightStarted)
                 _fightStarted = true;
 
-            FightLogRichTextBox.Text += _field.Fight().Information;
+            FightLogRichTextBox.Text += _field.Fight().GetFightMessage();
             FightLogRichTextBox.SelectionStart = FightLogRichTextBox.Text.Length;
             FightLogRichTextBox.ScrollToCaret();
             RenderDynamicGUI();

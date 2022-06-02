@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 
 namespace AutoBattlerSharp.Logic.Models.Items
 {
-    public interface IArmour
+    public interface IWeapon
     {
-        public short DefencePoints { get; set; }
+        public short AttackPoints { get; set; }
+        public float Accuracy { get; set; }
 
-        public short GetDefence(Attributes attributes, FightInfo info);
+        public short GetAttackDamage(Attributes attributes);
+
     }
 }

@@ -28,7 +28,7 @@ namespace AutoBattlerSharp.Logic.Models.Items
             Accuracy = 1;
         }
 
-        public short GetAttackDamage(Attributes attributes, FightInfo info)
+        public short GetAttackDamage(Attributes attributes)
         {
             return attributes.Strength;
         }

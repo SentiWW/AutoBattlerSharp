@@ -22,7 +22,7 @@ namespace AutoBattlerSharp.Logic.Models.Items
 
         }
 
-        public new short GetAttackDamage(Attributes attributes, FightInfo info)
+        public new short GetAttackDamage(Attributes attributes)
         {
             int attackDamage = 0;
             attackDamage += AttackPoints * attributes.Magic;
