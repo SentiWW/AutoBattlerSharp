@@ -216,7 +216,6 @@
             // 
             this.BottomSplitContainerVertical.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.BottomSplitContainerVertical.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.BottomSplitContainerVertical.IsSplitterFixed = true;
             this.BottomSplitContainerVertical.Location = new System.Drawing.Point(0, 0);
             this.BottomSplitContainerVertical.Name = "BottomSplitContainerVertical";
             // 
