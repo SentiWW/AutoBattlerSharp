@@ -45,7 +45,10 @@ namespace AutoBattlerSharp.Logic.Models.Creatures
             short defence = GetTotalDefence();
 
             if (attack == short.MinValue)
+            {
+                info.FightOutcome = FightOutcomes.Missed;
                 return info;
+            }
 
             short damage = (short)(attack - defence);
 

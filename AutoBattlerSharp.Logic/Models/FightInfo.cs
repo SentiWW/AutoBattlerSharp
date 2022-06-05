@@ -17,9 +17,9 @@ namespace AutoBattlerSharp.Logic.Models
         public Armour? Armour { get; set; }
         public string Information { get; set; } = "";
         public int Damage { get; set; }
-        private Random _random = new Random();
+        private static Random _random = new Random();
 
-        private string GetRandomHitWordUnarmed()
+        private static string GetRandomHitWordUnarmed()
         {
             List<string> words = new List<string>()
             {
@@ -37,7 +37,7 @@ namespace AutoBattlerSharp.Logic.Models
             return words[_random.Next(words.Count)];
         }
 
-        private string GetRandomHitWordWeapon()
+        private static string GetRandomHitWordWeapon()
         {
             List<string> words = new List<string>()
             { 
