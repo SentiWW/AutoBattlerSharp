@@ -88,10 +88,14 @@ namespace AutoBattlerSharp.Logic.Models.Creatures
 
             short totalAttack = Attributes.Strength;
 
-            if (Weapon is null)
-                return totalAttack;
+            if (!(Weapon is null))
+               totalAttack += Weapon.GetAttackDamage(Attributes, info);
 
-            totalAttack += Weapon.GetAttackDamage(Attributes);
+            if (accuracy < 10)
+            {
+                info.Information += $"{Name} strikes critically!\n";
+                totalAttack *= 2;
+            }
 
             return totalAttack;
         }
