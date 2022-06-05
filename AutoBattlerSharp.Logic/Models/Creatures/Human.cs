@@ -12,7 +12,7 @@ namespace AutoBattlerSharp.Logic.Models.Creatures
     {
         [JsonPropertyName("armour")]
         [JsonInclude]
-        public List<Armour>? ArmourPieces; 
+        public Armour? Armour; 
 
         [JsonPropertyName("weapon")]
         [JsonInclude]
@@ -41,31 +41,50 @@ namespace AutoBattlerSharp.Logic.Models.Creatures
 
             CheckValidTarget(target, info);
 
-            short damage = (short)(GetTotalAttack(ref info) - GetTotalDefence(ref info));
+            short attack = GetTotalAttack();
+            short defence = GetTotalDefence();
 
-            if (damage <= 0)
+            if (attack == short.MinValue)
             {
-                info.Information += $"{Name} tried to attack {((Entity)target).Name} but they didn't deal any damage!\n";
+                info.FightOutcome = FightOutcomes.Missed;
                 return info;
             }
 
+            short damage = (short)(attack - defence);
+
+            info.Damage = damage;
+
+            if (damage < 0)
+            {
+                info.FightOutcome = FightOutcomes.LessThanZeroDamage;
+                return info;
+            }
+
+            if (damage == 0)
+            {
+                info.FightOutcome = FightOutcomes.ZeroDamage;
+                return info;
+            }
+
+            if (damage < 10)
+                info.FightOutcome = FightOutcomes.LessThanTenDamage;
+
+            if (damage >= 10)
+                info.FightOutcome = FightOutcomes.OverOrTenDamage;
+
             target.Attributes.Health -= damage;
-            info.Information += $"{Name} attacks {((Entity)target).Name} with {Weapon.Name} dealing {damage} damage!\n";
+            info.Information += $"{Name} attacks {((Entity)target).Name} dealing {damage} damage!\n";
 
             CheckIfTargetDied(target, info);
             return info;
         }
 
-        public new short GetTotalAttack(ref FightInfo info)
+        public new short GetTotalAttack()
         {
             short accuracy = (short)_random.Next(0, 100);
 
             if (accuracy > 90)
-            {
-                info.Information += $"{Name} missed!\n";
-
-                return 0;
-            }
+                return short.MinValue;
 
             short totalAttack = Attributes.Strength;
 
@@ -75,24 +94,22 @@ namespace AutoBattlerSharp.Logic.Models.Creatures
             if (accuracy < 10)
             {
                 info.Information += $"{Name} strikes critically!\n";
-
                 totalAttack *= 2;
             }
 
             return totalAttack;
         }
 
-        public new short GetTotalDefence(ref FightInfo info)
+        public new short GetTotalDefence()
         {
             short totalDefence = (short)(Math.Sqrt(Attributes.Strength) +
                                        Math.Sqrt(Attributes.Resistance) +
                                        Math.Sqrt(Attributes.Sturdiness));
 
-            if (ArmourPieces is null || ArmourPieces.Count == 0)
+            if (Armour is null)
                 return totalDefence;
 
-            foreach (Armour piece in ArmourPieces)
-                totalDefence += piece.GetDefence(Attributes, info);
+            totalDefence += Armour.GetDefence(Attributes);
 
             return totalDefence;
         }
@@ -105,9 +122,7 @@ namespace AutoBattlerSharp.Logic.Models.Creatures
                    $"\tDescription: {Description}\n" +
                    Attributes.ToString() +
                    (Weapon is not null ? Weapon.ToString() : "") +
-                   (ArmourPieces is not null && ArmourPieces.Count > 0 ?
-                   string.Join(" ", ArmourPieces.Select(piece => piece.ToString())) :
-                   "");
+                   (Armour is not null ? Armour.ToString() : "");
         }
     }
 }

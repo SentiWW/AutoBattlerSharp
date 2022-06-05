@@ -30,15 +30,15 @@ namespace AutoBattlerSharp
                 _fightStarted = false;
                 FightButton.Enabled = true;
                 GameTimer.Stop();
-                RenderDynamicGUI();
                 FightLogRichTextBox.Text += "There is no one left to attack! Consider adding some new fighters.\n";
+                RenderDynamicGUI();
                 return;
             }
 
             if (!_fightStarted)
                 _fightStarted = true;
 
-            FightLogRichTextBox.Text += _field.Fight().Information;
+            FightLogRichTextBox.Text += _field.Fight().GetFightMessage();
             FightLogRichTextBox.SelectionStart = FightLogRichTextBox.Text.Length;
             FightLogRichTextBox.ScrollToCaret();
             RenderDynamicGUI();

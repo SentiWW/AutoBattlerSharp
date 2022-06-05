@@ -46,13 +46,36 @@ namespace AutoBattlerSharp.Logic.Models.Creatures
         {
             CheckValidTarget(target, info);
 
-            short damage = (short)(GetTotalAttack(ref info) - GetTotalDefence(ref info));
+            short attack = GetTotalAttack();
+            short defence = GetTotalDefence();
 
-            if (damage <= 0)
+            if (attack == short.MinValue)
             {
-                info.Information += $"{Name} tried to attack {((Entity)target).Name} but they didn't deal any damage!\n";
+                info.FightOutcome = FightOutcomes.Missed;
                 return info;
             }
+
+            short damage = (short)(attack - defence);
+
+            info.Damage = damage;
+
+            if (damage < 0)
+            {
+                info.FightOutcome = FightOutcomes.LessThanZeroDamage;
+                return info;
+            }
+
+            if(damage == 0)
+            {
+                info.FightOutcome = FightOutcomes.ZeroDamage;
+                return info;
+            }
+
+            if(damage < 10)
+                info.FightOutcome = FightOutcomes.LessThanTenDamage;
+
+            if (damage >= 10)
+                info.FightOutcome = FightOutcomes.OverOrTenDamage;
 
             target.Attributes.Health -= damage;
             info.Information += $"{Name} attacks {((Entity)target).Name} dealing {damage} damage!\n";
@@ -65,13 +88,13 @@ namespace AutoBattlerSharp.Logic.Models.Creatures
         {
             if (!target.Attributes.IsAttackable)
             {
-                info.Information += $"{Name} tried to attack {((Entity)target).Name} but they are unattackable!\n";
+                info.FightOutcome = FightOutcomes.AttackedUnattackable;
                 return info;
             }
 
             if (!target.Attributes.IsAlive)
             {
-                info.Information += $"{Name} tried to attack {((Entity)target).Name} but they are dead!\n";
+                info.FightOutcome = FightOutcomes.AttackedDead;
                 return info;
             }
 
@@ -85,27 +108,23 @@ namespace AutoBattlerSharp.Logic.Models.Creatures
 
             target.Attributes.IsAttackable = false;
             target.Attributes.IsAlive = false;
-            info.Information += $"{((Entity)target).Name} dies!\n";
+            info.FightOutcome = FightOutcomes.KillingBlow;
             return info;
         }
 
-        public short GetTotalAttack(ref FightInfo info)
+        public short GetTotalAttack()
         {
             short accuracy = (short)_random.Next(0, 100);
 
             if (accuracy > 90)
-            {
-                info.Information += $"{Name} missed!\n";
-
-                return 0;
-            }
+                return short.MinValue;
 
             short totalAttack = Attributes.Strength;
 
             return totalAttack;
         }
 
-        public short GetTotalDefence(ref FightInfo info)
+        public short GetTotalDefence()
         {
             short totalDefence = (short)(Math.Sqrt(Attributes.Strength) +
                                          Math.Sqrt(Attributes.Resistance) +

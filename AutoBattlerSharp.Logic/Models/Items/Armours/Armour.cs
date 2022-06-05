@@ -25,7 +25,7 @@ namespace AutoBattlerSharp.Logic.Models.Items
             DefencePoints = defencePoints;
         }
 
-        public short GetDefence(Attributes attributes, FightInfo info)
+        public short GetDefence(Attributes attributes)
         {
             return DefencePoints;
         }
