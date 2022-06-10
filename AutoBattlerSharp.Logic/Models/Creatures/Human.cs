@@ -1,4 +1,5 @@
-﻿using AutoBattlerSharp.Logic.Models.Items;
+﻿using AutoBattlerSharp.Logic.Models.Items.Armours;
+using AutoBattlerSharp.Logic.Models.Items.Weapons;
 using System;
 using System.Collections.Generic;
 using System.Linq;
