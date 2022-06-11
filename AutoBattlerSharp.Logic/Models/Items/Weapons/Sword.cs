@@ -23,13 +23,7 @@ namespace AutoBattlerSharp.Logic.Models.Items.Weapons
         public new short GetAttackDamage(Attributes attributes)
         {
             int attackDamage = 0;
-
-            Random rnd = new Random();
-
-            if (rnd.NextDouble() < Accuracy)
-            {
-                attackDamage += AttackPoints * attributes.Attacks + attributes.Sturdiness + attributes.Strength;
-            }
+            attackDamage += AttackPoints * attributes.Attacks + attributes.Sturdiness + attributes.Strength;
             return (short)attackDamage;
         }
     }
