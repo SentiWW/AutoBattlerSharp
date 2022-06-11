@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace AutoBattlerSharp.Logic.Models.Items
+namespace AutoBattlerSharp.Logic.Models.Items.Armours
 {
     public class Armour : Item, IArmour
     {

@@ -8,7 +8,8 @@ using System.Threading.Tasks;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using AutoBattlerSharp.Logic.Models.Creatures;
-using AutoBattlerSharp.Logic.Models.Items;
+using AutoBattlerSharp.Logic.Models.Items.Weapons;
+using AutoBattlerSharp.Logic.Models.Items.Armours;
 
 namespace AutoBattlerSharp.Logic
 {

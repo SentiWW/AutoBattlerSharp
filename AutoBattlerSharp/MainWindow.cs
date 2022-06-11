@@ -3,6 +3,7 @@ using AutoBattlerSharp.Logic;
 using AutoBattlerSharp.Logic.Models;
 using AutoBattlerSharp.Logic.Models.Creatures;
 using AutoBattlerSharp.Logic.Models.Items;
+using AutoBattlerSharp.Logic.Models.Items.Weapons;
 using System.Runtime.InteropServices;
 
 namespace AutoBattlerSharp
