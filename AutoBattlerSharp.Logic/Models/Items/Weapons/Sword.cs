@@ -28,7 +28,7 @@ namespace AutoBattlerSharp.Logic.Models.Items.Weapons
 
             if (rnd.NextDouble() < Accuracy)
             {
-                attackDamage += AttackPoints * (attributes.Sturdiness + attributes.Strength) + attributes.Attacks;
+                attackDamage += AttackPoints * attributes.Attacks + attributes.Sturdiness + attributes.Strength;
             }
             return (short)attackDamage;
         }
