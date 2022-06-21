@@ -1,11 +1,6 @@
 ﻿using AutoBattlerSharp.Logic.Models.Items.Armours;
 using AutoBattlerSharp.Logic.Models.Items.Weapons;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace AutoBattlerSharp.Logic.Models.Creatures
 {

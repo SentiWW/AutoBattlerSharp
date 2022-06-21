@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Xunit;
+﻿using Xunit;
 using AutoBattlerSharp.Logic.Models;
-using AutoBattlerSharp.Logic.Models.Items;
 using AutoBattlerSharp.Logic.Models.Items.Armours;
 
 namespace AutoBattlerSharp.Logic.Tests.Models.Items.Armours
